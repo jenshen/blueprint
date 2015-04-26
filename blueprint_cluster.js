@@ -53,7 +53,7 @@ function JSONtoRoomList(json) {
 
  
 function shuffle(array) {
-	// source: http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+  // source: http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
   var currentIndex = array.length, temporaryValue, randomIndex ;
 
   // While there remain elements to shuffle...
@@ -73,41 +73,43 @@ function shuffle(array) {
 }
 
 function groupRooms(roomList) {
-	// shuffle array
-	roomList = shuffle(roomList);
+  // shuffle array
+  roomList = shuffle(roomList);
 
-	// set up clusters:
-	//var clusterDict = '{"0": [], "1": [], "2": [], "3": []}';
+  // set up clusters:
+  //var clusterDict = '{"0": [], "1": [], "2": [], "3": []}';
 
   var groupList = [[],[],[],[]];
 
-	// match rooms into four clusters
-	for (i=0; i<roomList.length; i++) {
-		// var clusterIndex = (i % 4); 
-		// var clusterDictObj = JSON.parse(clusterDict);
-		// clusterDictObj[clusterIndex].push(roomList[i]);
-		// clusterDict = JSON.stringify(clusterDictObj);
+  // match rooms into four clusters
+  for (i=0; i<roomList.length; i++) {
+    // var clusterIndex = (i % 4); 
+    // var clusterDictObj = JSON.parse(clusterDict);
+    // clusterDictObj[clusterIndex].push(roomList[i]);
+    // clusterDict = JSON.stringify(clusterDictObj);
 
     var groupIndex = (i % 4); 
     groupList[groupIndex].push(roomList[i]);
-	}
+  }
 
 
   console.log(groupList);
 
   return groupList;
 
-	
-	// determine flush dimensions
-	// return list of clusters (each a list of rooms)
+  
+  // determine flush dimensions
+  // return list of clusters (each a list of rooms)
 
 
 }
 
 var groupList = groupRooms(sampleRoomList);
-var clusterList = createClusterMap(groupList);
+var clusterList = createClusterList(groupList);
 
-function createClusterMap(groupList) {
+// Returns a list of four clusters which include the rooms.
+// Clusters are ordered by largest square footage to smallest. 
+function createClusterList(groupList) {
   var clusterList = [];
 
   for (i=0; i<groupList.length; i++) {
