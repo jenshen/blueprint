@@ -10,21 +10,25 @@ var Floor = function(width, height, clusters) {
 		this.grid[i] = [];
 	}
 
+	// returns whether adding cluster was successful
 	this.addCluster = function(cluster, corner) {
-
+		if (this.isValidPlacement(cluster, corner)) {
+			this.markFilled(cluster, corner);
+		}
+		return false;
 	}
 
-	this.markFilled = function(cluster) {
+	this.markFilled = function(cluster, corner, isHorizontal) {
 		// this.clusterWidth = (cluster.orientation % 2 == 0) ? same : flipped;
 		// this.clusterHeight = (cluster.orientation % 2 == 0) ? same : flipped;
 		for 
 	}
 
-	this.isValidPlacement = function(cluster) {
+	this.isValidPlacement = function(cluster, corner, isHorizontal) {
 
 	}
 
-	this.findEmptySquare = function() {
+	this.addHallway = function(cluster, corner) {
 
 	}
 }
@@ -33,14 +37,14 @@ var Floor = function(width, height, clusters) {
 // orderings: list of corner ordering lists to try from top-left, going clockwise
 var shuffle = function(clusters, orderings) {
 	var width = 50;
-	var height = 40;
+	var height = 50;
 	var floor = new Floor(width, height, clusters);
 
 	for (var i = 0; i < orderings.length; i++) {
 		var ordering = orderings[i];
 		for (var j = 0; j < clusters.length) {
 			var clusterToPlace = clusters[j];
-			floor.addCluster(clusterToPlace, ordering[j]);
+			if (!floor.addCluster(clusterToPlace, ordering[j]) break;
 		}
 	}
 }
