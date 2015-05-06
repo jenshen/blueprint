@@ -5,10 +5,17 @@ var Floor = function(width, height, clusters) {
 	this.arrangements = new Object(); // All created arrangements
 
 	// grid is a 2D array marking which squares have been filled by room(s)
+	// a square contains a # which indicates what kind of room it is a part of:
+	// 0 = empty; 1 = hallway; 2 = room
 	this.grid = new Array(this.height);
-	for (var i = 0; i < this.width; i++) {
-		this.grid[i] = [];
+	for (var i = 0; i < this.height; i++) {
+		this.grid[i] = new Array(this.width);
+		for (var j = 0; j < this.width; j++) {
+			this.grid[i][j] = 0;
+		}
 	}
+
+	console.log(this.grid);
 
 	// returns whether adding cluster was successful
 	this.addCluster = function(cluster, corner) {
