@@ -11,21 +11,44 @@ var Floor = function(width, height, clusters) {
 	}
 
 	// returns whether adding cluster was successful
-	this.addCluster = function(cluster, corner) {
-		if (this.isValidPlacement(cluster, corner)) {
-			this.markFilled(cluster, corner);
+	this.addCluster = function(cluster, corner, isRotated) {
+		if (this.isValidPlacement(cluster, corner, isRotated)) {
+			this.markFilled(cluster, corner, isRotated);
 		}
 		return false;
 	}
 
-	this.markFilled = function(cluster, corner, isHorizontal) {
+	this.markFilled = function(cluster, corner, isRotated) {
 		// this.clusterWidth = (cluster.orientation % 2 == 0) ? same : flipped;
 		// this.clusterHeight = (cluster.orientation % 2 == 0) ? same : flipped;
-		for 
+		
+
+		
 	}
 
-	this.isValidPlacement = function(cluster, corner, isHorizontal) {
+	this.isValidPlacement = function(cluster, corner, isRotated) {
+		var clusterWidth = cluster.width;
+		var clusterHeight = cluster.height;
+		if (isRotated) {
+			clusterWidth = cluster.height;
+			clusterHeight = cluster.width;
+		}
 
+		// Checks the four corners of the cluster on the grid to be empty
+		// All squares in between should therefore be empty
+		// Checks cluster's corners top-left to bottom-left in clockwise order
+		if (corner == 1) {
+			return !(this.grid[0][0] == 0
+				&& this.grid[0][clusterWidth-1] == 0
+				&& this.grid[clusterHeight-1][clusterWidth-1] == 0
+				&& this.grid[clusterHeight-1][0] == 0)
+		} else if (corner == 2) {
+			return !(this.grid[0][this.width-1] == 0 && this.grid[clusterHeight-1][this.width-clusterWidth] == 0)
+		} else if (corner == 3) {
+			return !(this.grid[0][0] == 0 && this.grid[clusterHeight-1][clusterWidth-1] == 0)
+		} else if (corner == 4) {
+			return !(this.grid[0][0] == 0 && this.grid[clusterHeight-1][clusterWidth-1] == 0)
+		}
 	}
 
 	this.addHallway = function(cluster, corner) {
