@@ -45,16 +45,25 @@ var Floor = function(width, height, clusters) {
 		// All squares in between should therefore be empty
 		// Checks cluster's corners top-left to bottom-left in clockwise order
 		if (corner == 1) {
-			return !(this.grid[0][0] == 0
+			return (this.grid[0][0] == 0
 				&& this.grid[0][clusterWidth-1] == 0
 				&& this.grid[clusterHeight-1][clusterWidth-1] == 0
-				&& this.grid[clusterHeight-1][0] == 0)
+				&& this.grid[clusterHeight-1][0] == 0);
 		} else if (corner == 2) {
-			return !(this.grid[0][this.width-1] == 0 && this.grid[clusterHeight-1][this.width-clusterWidth] == 0)
+			return (this.grid[0][this.width-clusterWidth] == 0
+				&& this.grid[0][this.width-1] == 0
+				&& this.grid[clusterHeight-1][this.width-1] == 0
+				&& this.grid[clusterHeight-1][this.width-clusterWidth] == 0);
 		} else if (corner == 3) {
-			return !(this.grid[0][0] == 0 && this.grid[clusterHeight-1][clusterWidth-1] == 0)
+			return (this.grid[this.height-clusterHeight][this.width-clusterWidth] == 0 
+				&& this.grid[this.height-clusterHeight][this.width-1] == 0
+				&& this.grid[this.height-1][this.width-1] == 0
+				&& this.grid[this.height-1][this.width-clusterWidth] == 0);
 		} else if (corner == 4) {
-			return !(this.grid[0][0] == 0 && this.grid[clusterHeight-1][clusterWidth-1] == 0)
+			return (this.grid[this.height-clusterHeight][0] == 0 
+				&& this.grid[this.height-clusterHeight][clusterWidth-1] == 0 
+				&& this.grid[clusterHeight-1][clusterWidth-1] == 0
+				&& this.grid[clusterHeight-1][0] == 0);
 		}
 	}
 
