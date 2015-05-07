@@ -1,8 +1,9 @@
-var Floor = function(width, height, clusters) {
+var Layout = function(width, height, clusters) {
 	this.width = width;
 	this.height = height;
 	this.clusters = clusters.slice(); // List of clusters to place
 	this.arrangements = new Object(); // All created arrangements
+	this.HALLWAY_WIDTH = 5;
 
 	// grid is a 2D array marking which squares have been filled by room(s)
 	// a square contains a # which indicates what kind of room it is a part of:
@@ -36,6 +37,7 @@ var Floor = function(width, height, clusters) {
 
 		// Set boundary coordinates of cluster in grid
 		var minX, maxX, minY, maxY;
+		var hallwayDeltas = [];
 		if (corner == 1) {
 			minX = 0;
 			maxX = clusterWidth-1;
@@ -58,14 +60,19 @@ var Floor = function(width, height, clusters) {
 			maxY = this.height-1;
 		}
 
+		if (minX == undefined) return; // Boundaries not set from invalid corner
+
+		// IS VALID PLACEMENT
+
+		// MARK ROOM FILLED
 		// Fill in cluster's boundaries to mark filled
-		if (minX != undefined) { // Boundaries were set
-			for (var x = minX; x < maxX; x++) {
-				for (var y = minY; y < maxY; y++) {
-					this.grid[y][x] = 2;
-				}
+		for (var x = minX; x < maxX; x++) {
+			for (var y = minY; y < maxY; y++) {
+				this.grid[y][x] = 2;
 			}
 		}
+
+		// MARK HALLWAY FILLED
 	}
 
 	this.isValidPlacement = function(cluster, corner, isRotated) {
@@ -79,6 +86,7 @@ var Floor = function(width, height, clusters) {
 		// Checks the four corners of the cluster on the grid to be empty
 		// All squares in between should therefore be empty
 		// Checks cluster's corners top-left to bottom-left in clockwise order
+		var roomCanBePlaced 
 		if (corner == 1) {
 			return (this.grid[0][0] == 0
 				&& this.grid[0][clusterWidth-1] == 0
@@ -102,7 +110,7 @@ var Floor = function(width, height, clusters) {
 		}
 	}
 
-	this.addHallway = function(cluster, corner) {
+	this.addHallway = function(cluster, corner, isRotated) {
 
 	}
 }
@@ -112,7 +120,7 @@ var Floor = function(width, height, clusters) {
 var shuffle = function(clusters, orderings) {
 	var width = 50;
 	var height = 50;
-	var floor = new Floor(width, height, clusters);
+	var layout = new Layout(width, height, clusters);
 
 	for (var i = 0; i < orderings.length; i++) {
 		var ordering = orderings[i];
