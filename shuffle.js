@@ -2,8 +2,14 @@ var Layout = function(width, height, clusters) {
 	this.width = width;
 	this.height = height;
 	this.clusters = clusters.slice(); // List of clusters to place
-	this.arrangements = new Object(); // All created arrangements
+	// this.arrangements = new Object(); // All created arrangements
 	this.HALLWAY_WIDTH = 5;
+	this.DOOR_WIDTH = 3;
+	this.OPEN_WALLS = [['right', 'bottom'], // [rotated, unrotated]; corners 1-4
+		['bottom', 'left'],
+		['left', 'top'],
+		['right', 'top']]
+
 
 	// grid is a 2D array marking which squares have been filled by room(s)
 	// a square contains a # which indicates what kind of room it is a part of:
@@ -23,8 +29,8 @@ var Layout = function(width, height, clusters) {
 	// this labels those squares as a hallway (1)
 	this.addFoyer = function() {
 		var roomCenterWidth = Math.floor(this.width/2);
-		var foyerStart = roomCenterWidth - 5; 
-		var foyerEnd = roomCenterWidth + 5;
+		var foyerStart = roomCenterWidth - 3; 
+		var foyerEnd = roomCenterWidth + 2;
 		var foyerLength = 10; 
 
 		for (i = 0; i < foyerLength; i++) {
@@ -36,9 +42,6 @@ var Layout = function(width, height, clusters) {
 
 	// returns whether adding cluster was successful
 	this.addCluster = function(cluster, corner) {
-		// if (this.isValidPlacement(cluster, corner, isRotated)) {
-			// this.markFilled(cluster, corner, isRotated);
-		// }
 		this.markFilled(cluster, corner);
 		return false;
 	}
@@ -55,26 +58,26 @@ var Layout = function(width, height, clusters) {
 		// Set boundary coordinates of cluster in grid
 		var minX, maxX, minY, maxY;
 		var hallwayDeltas = [];
-		if (corner == 1) {
+		if (corner == 1) { // Top-left
 			hallwayDeltas = [0, this.HALLWAY_WIDTH, 0, this.HALLWAY_WIDTH];
 			minX = 0;
 			maxX = clusterWidth-1;
 			minY = 0;
 			maxY = clusterHeight-1;
 			hallwayDeltas = 
-		} else if (corner == 2) {
+		} else if (corner == 2) { // Top-right
 			hallwayDeltas = [-this.HALLWAY_WIDTH, 0, 0, this.HALLWAY_WIDTH];
 			minX = this.width-clusterWidth;
 			maxX = this.width-1;
 			minY = 0;
 			maxY = clusterHeight-1;
-		} else if (corner == 3) {
+		} else if (corner == 3) { // Bottom-right
 			hallwayDeltas = [-this.HALLWAY_WIDTH, 0, this.HALLWAY_WIDTH, 0];
 			minX = this.width-clusterWidth;
 			maxX = this.width-1;
 			minY = this.height-clusterHeight;
 			maxY = this.height-1;
-		} else if (corner == 4) {
+		} else if (corner == 4) { // Bottom-left
 			hallwayDeltas = [0, this.HALLWAY_WIDTH, this.HALLWAY_WIDTH, 0];
 			minX = 0;
 			maxX = clusterWidth-1;
@@ -107,9 +110,50 @@ var Layout = function(width, height, clusters) {
 		// updatedCluster.rotated = cluster.rotated;
 		// updatedCluster.xPos = minX;
 		// updatedCluster.yPos = minY;
+		// arrangements.add(updatedCluster);
+
+		// UPDATE X, Y POSITION
 		cluster.xPos = minX;
 		cluster.yPos = minY;
-		// arrangements.add(updatedCluster);
+
+		// ADD DOORS
+		var openWall = OPEN_WALLS[corner-1][cluster.rotated ? 0 : 1];
+		var rooms = cluster.roomList;
+		var totalDistance = 0;
+		if (openWall == 'left' || openWall == 'right') {
+			// Cluster is rotated
+			for (int i = 0; i < rooms.length; i++) {
+				// Must flip height + width since cluster is rotated
+				var roomHeight = rooms[i].width;
+
+				// Initially place doors on left side of cluster
+				var xCenter = xMin + 0;
+				var yCenter = yMin + Math.floor(roomHeight/2);
+
+				// Move doors to right side of cluster
+				if (openWall == 'right') xCenter += (cluster.Width-1); 
+
+				// Door created with coordinates relative to entire layout + rotation included
+				// Coordinates are center of door
+				rooms[i].door = Door(xCenter, yCenter, cluster.rotated);
+			}
+		} else if (openWall == 'top' || openWall == 'bottom') {
+			// Cluster NOT rotated
+			for (int i = 0; i < rooms.length; i++) {
+				// Must flip height + width since cluster is rotated
+				var roomWidth = rooms[i].width;
+
+				// Initially place doors on top side of cluster
+				var xCenter = xMin + Math.floor(roomWidth/2);
+				var yCenter = yMin + 0;
+
+				// Move doors to bottom side of cluster
+				if (openWall == 'bottom') yCenter += (cluster.Height-1); 
+
+				// Door created with coordinates relative to entire layout + rotation included
+				rooms[i].door = Door(xCenter, yCenter, cluster.rotated);
+			}
+		}
 	}
 
 	// this.isValidPlacement = function(cluster, corner, isRotated) {
@@ -157,6 +201,7 @@ var shuffle = function(clusters, orderings) {
 
 	for (var i = 0; i < orderings.length; i++) {
 		var ordering = orderings[i];
+		layout.addFoyer(); // Add foyer first to mark space
 		for (var j = 0; j < clusters.length) {
 			var clusterToPlace = clusters[j];
 			if (!layout.addCluster(clusterToPlace, ordering[j]) break;

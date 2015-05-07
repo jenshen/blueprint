@@ -14,6 +14,11 @@ function Room(name, width, height, floor){
    this.width = width;
    this.height = height;
    this.floor = floor;
+   this.door = undefined;
+}
+
+function Door(xCenter, yCenter, isRotated) {
+
 }
 
 //MAKING SAMPLE ROOM LIST: 
