@@ -18,6 +18,22 @@ var Layout = function(width, height, clusters) {
 
 	console.log(this.grid);
 
+	// adds a foyer (size: width=5 by height=10) to the same location of each apartment where the door goes
+	// location = bottom center of each layout along the wider wall
+	// this labels those squares as a hallway (1)
+	this.addFoyer = function() {
+		var roomCenterWidth = Math.floor(this.width/2);
+		var foyerStart = roomCenterWidth - 5; 
+		var foyerEnd = roomCenterWidth + 5;
+		var foyerLength = 10; 
+
+		for (i = 0; i < foyerLength; i++) {
+			for (j = foyerStart; j < foyerEnd; j++) {
+				this.grid[this.height-1-i][j] = 1;
+			}
+		}
+	}
+
 	// returns whether adding cluster was successful
 	this.addCluster = function(cluster, corner, isRotated) {
 		if (this.isValidPlacement(cluster, corner, isRotated)) {
@@ -39,21 +55,25 @@ var Layout = function(width, height, clusters) {
 		var minX, maxX, minY, maxY;
 		var hallwayDeltas = [];
 		if (corner == 1) {
+			hallwayDeltas = [0, this.HALLWAY_WIDTH, 0, this.HALLWAY_WIDTH];
 			minX = 0;
 			maxX = clusterWidth-1;
 			minY = 0;
 			maxY = clusterHeight-1;
 		} else if (corner == 2) {
+			hallwayDeltas = [-this.HALLWAY_WIDTH, 0, 0, this.HALLWAY_WIDTH];
 			minX = this.width-clusterWidth;
 			maxX = this.width-1;
 			minY = 0;
 			maxY = clusterHeight-1;
 		} else if (corner == 3) {
+			hallwayDeltas = [-this.HALLWAY_WIDTH, 0, this.HALLWAY_WIDTH, 0];
 			minX = this.width-clusterWidth;
 			maxX = this.width-1;
 			minY = this.height-clusterHeight;
 			maxY = this.height-1;
 		} else if (corner == 4) {
+			hallwayDeltas = [0, this.HALLWAY_WIDTH, this.HALLWAY_WIDTH, 0];
 			minX = 0;
 			maxX = clusterWidth-1;
 			minY = this.height-clusterHeight;
@@ -111,6 +131,7 @@ var Layout = function(width, height, clusters) {
 	}
 
 	this.addHallway = function(cluster, corner, isRotated) {
+
 
 	}
 }
