@@ -26,11 +26,46 @@ var Floor = function(width, height, clusters) {
 	}
 
 	this.markFilled = function(cluster, corner, isRotated) {
-		// this.clusterWidth = (cluster.orientation % 2 == 0) ? same : flipped;
-		// this.clusterHeight = (cluster.orientation % 2 == 0) ? same : flipped;
-		
+		var clusterWidth = cluster.width;
+		var clusterHeight = cluster.height;
+		// Flip dimensions if cluster is rotated
+		if (isRotated) {
+			clusterWidth = cluster.height;
+			clusterHeight = cluster.width;
+		}
 
-		
+		// Set boundary coordinates of cluster in grid
+		var minX, maxX, minY, maxY;
+		if (corner == 1) {
+			minX = 0;
+			maxX = clusterWidth-1;
+			minY = 0;
+			maxY = clusterHeight-1;
+		} else if (corner == 2) {
+			minX = this.width-clusterWidth;
+			maxX = this.width-1;
+			minY = 0;
+			maxY = clusterHeight-1;
+		} else if (corner == 3) {
+			minX = this.width-clusterWidth;
+			maxX = this.width-1;
+			minY = this.height-clusterHeight;
+			maxY = this.height-1;
+		} else if (corner == 4) {
+			minX = 0;
+			maxX = clusterWidth-1;
+			minY = this.height-clusterHeight;
+			maxY = this.height-1;
+		}
+
+		// Fill in cluster's boundaries to mark filled
+		if (minX != undefined) { // Boundaries were set
+			for (var x = minX; x < maxX; x++) {
+				for (var y = minY; y < maxY; y++) {
+					this.grid[y][x] = 2;
+				}
+			}
+		}
 	}
 
 	this.isValidPlacement = function(cluster, corner, isRotated) {
