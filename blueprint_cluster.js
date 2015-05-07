@@ -34,7 +34,9 @@ function Cluster(roomList, width, height){
    this.roomList = roomList;
    this.width = width;
    this.height = height;
-   this.horizontal = true;
+   this.rotated = false;
+   this.xPos = undefined; // Top-left corner
+   this.yPos = undefined; 
 }
 
 // Add methods like this.  All Person objects will be able to invoke this

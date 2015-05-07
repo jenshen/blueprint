@@ -35,18 +35,19 @@ var Layout = function(width, height, clusters) {
 	}
 
 	// returns whether adding cluster was successful
-	this.addCluster = function(cluster, corner, isRotated) {
-		if (this.isValidPlacement(cluster, corner, isRotated)) {
-			this.markFilled(cluster, corner, isRotated);
-		}
+	this.addCluster = function(cluster, corner) {
+		// if (this.isValidPlacement(cluster, corner, isRotated)) {
+			// this.markFilled(cluster, corner, isRotated);
+		// }
+		this.markFilled(cluster, corner);
 		return false;
 	}
 
-	this.markFilled = function(cluster, corner, isRotated) {
+	this.markFilled = function(cluster, corner) {
 		var clusterWidth = cluster.width;
 		var clusterHeight = cluster.height;
 		// Flip dimensions if cluster is rotated
-		if (isRotated) {
+		if (cluster.rotated) {
 			clusterWidth = cluster.height;
 			clusterHeight = cluster.width;
 		}
@@ -85,57 +86,66 @@ var Layout = function(width, height, clusters) {
 
 		// IS VALID PLACEMENT
 		// MARK HALLWAY FILLED
-		
+		var d_minX = hallwayDeltas[0];
+		var d_maxX = hallwayDeltas[1];
+		var d_minY = hallwayDeltas[2];
+		var d_maxY = hallwayDeltas[3];
+		for (var x = minX+d_minX; x < maxX+d_maxX; x++) {
+			for (var y = minY+d_minY; y < maxY+d_maxY; y++) {
+				this.grid[y][x] = 1;
+			}
+		}
 
 		// MARK ROOM FILLED
-		// Fill in cluster's boundaries to mark filled
 		for (var x = minX; x < maxX; x++) {
 			for (var y = minY; y < maxY; y++) {
 				this.grid[y][x] = 2;
 			}
 		}
 
+		// var updatedCluster = Cluster(cluster.roomList, cluster.width, cluster.height);
+		// updatedCluster.rotated = cluster.rotated;
+		// updatedCluster.xPos = minX;
+		// updatedCluster.yPos = minY;
+		cluster.xPos = minX;
+		cluster.yPos = minY;
+		// arrangements.add(updatedCluster);
 	}
 
-	this.isValidPlacement = function(cluster, corner, isRotated) {
-		var clusterWidth = cluster.width;
-		var clusterHeight = cluster.height;
-		if (isRotated) {
-			clusterWidth = cluster.height;
-			clusterHeight = cluster.width;
-		}
+	// this.isValidPlacement = function(cluster, corner, isRotated) {
+	// 	var clusterWidth = cluster.width;
+	// 	var clusterHeight = cluster.height;
+	// 	if (isRotated) {
+	// 		clusterWidth = cluster.height;
+	// 		clusterHeight = cluster.width;
+	// 	}
 
-		// Checks the four corners of the cluster on the grid to be empty
-		// All squares in between should therefore be empty
-		// Checks cluster's corners top-left to bottom-left in clockwise order
-		var roomCanBePlaced 
-		if (corner == 1) {
-			return (this.grid[0][0] == 0
-				&& this.grid[0][clusterWidth-1] == 0
-				&& this.grid[clusterHeight-1][clusterWidth-1] == 0
-				&& this.grid[clusterHeight-1][0] == 0);
-		} else if (corner == 2) {
-			return (this.grid[0][this.width-clusterWidth] == 0
-				&& this.grid[0][this.width-1] == 0
-				&& this.grid[clusterHeight-1][this.width-1] == 0
-				&& this.grid[clusterHeight-1][this.width-clusterWidth] == 0);
-		} else if (corner == 3) {
-			return (this.grid[this.height-clusterHeight][this.width-clusterWidth] == 0 
-				&& this.grid[this.height-clusterHeight][this.width-1] == 0
-				&& this.grid[this.height-1][this.width-1] == 0
-				&& this.grid[this.height-1][this.width-clusterWidth] == 0);
-		} else if (corner == 4) {
-			return (this.grid[this.height-clusterHeight][0] == 0 
-				&& this.grid[this.height-clusterHeight][clusterWidth-1] == 0 
-				&& this.grid[clusterHeight-1][clusterWidth-1] == 0
-				&& this.grid[clusterHeight-1][0] == 0);
-		}
-	}
-
-	this.addHallway = function(cluster, corner, isRotated) {
-
-
-	}
+	// 	// Checks the four corners of the cluster on the grid to be empty
+	// 	// All squares in between should therefore be empty
+	// 	// Checks cluster's corners top-left to bottom-left in clockwise order
+	// 	var roomCanBePlaced 
+	// 	if (corner == 1) {
+	// 		return (this.grid[0][0] == 0
+	// 			&& this.grid[0][clusterWidth-1] == 0
+	// 			&& this.grid[clusterHeight-1][clusterWidth-1] == 0
+	// 			&& this.grid[clusterHeight-1][0] == 0);
+	// 	} else if (corner == 2) {
+	// 		return (this.grid[0][this.width-clusterWidth] == 0
+	// 			&& this.grid[0][this.width-1] == 0
+	// 			&& this.grid[clusterHeight-1][this.width-1] == 0
+	// 			&& this.grid[clusterHeight-1][this.width-clusterWidth] == 0);
+	// 	} else if (corner == 3) {
+	// 		return (this.grid[this.height-clusterHeight][this.width-clusterWidth] == 0 
+	// 			&& this.grid[this.height-clusterHeight][this.width-1] == 0
+	// 			&& this.grid[this.height-1][this.width-1] == 0
+	// 			&& this.grid[this.height-1][this.width-clusterWidth] == 0);
+	// 	} else if (corner == 4) {
+	// 		return (this.grid[this.height-clusterHeight][0] == 0 
+	// 			&& this.grid[this.height-clusterHeight][clusterWidth-1] == 0 
+	// 			&& this.grid[clusterHeight-1][clusterWidth-1] == 0
+	// 			&& this.grid[clusterHeight-1][0] == 0);
+	// 	}
+	// }
 }
 
 // clusters already ordered largest to smallest
@@ -149,7 +159,7 @@ var shuffle = function(clusters, orderings) {
 		var ordering = orderings[i];
 		for (var j = 0; j < clusters.length) {
 			var clusterToPlace = clusters[j];
-			if (!floor.addCluster(clusterToPlace, ordering[j]) break;
+			if (!layout.addCluster(clusterToPlace, ordering[j]) break;
 		}
 	}
 }
