@@ -60,6 +60,7 @@ var Layout = function(width, height, clusters) {
 			maxX = clusterWidth-1;
 			minY = 0;
 			maxY = clusterHeight-1;
+			hallwayDeltas = 
 		} else if (corner == 2) {
 			hallwayDeltas = [-this.HALLWAY_WIDTH, 0, 0, this.HALLWAY_WIDTH];
 			minX = this.width-clusterWidth;
@@ -83,6 +84,8 @@ var Layout = function(width, height, clusters) {
 		if (minX == undefined) return; // Boundaries not set from invalid corner
 
 		// IS VALID PLACEMENT
+		// MARK HALLWAY FILLED
+		
 
 		// MARK ROOM FILLED
 		// Fill in cluster's boundaries to mark filled
@@ -92,7 +95,6 @@ var Layout = function(width, height, clusters) {
 			}
 		}
 
-		// MARK HALLWAY FILLED
 	}
 
 	this.isValidPlacement = function(cluster, corner, isRotated) {
