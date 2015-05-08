@@ -201,9 +201,7 @@ var Layout = function(width, height, clusters) {
 
 // clusters already ordered largest to smallest
 // orderings: list of corner ordering lists to try from top-left, going clockwise
-var shuffle = function(clusters, orderings) {
-	var width = 50;
-	var height = 50;
+var shuffle = function(clusters, orderings, width, height) {
 	var layout = new Layout(width, height, clusters);
 
 	for (var i = 0; i < orderings.length; i++) {
@@ -275,7 +273,10 @@ function createBlueprint(params) {
 
 	// make orderings = getRoomPlacementOrder()
 
-	// layoutList = shuffle(clusterList, orderings);
+	//var width = getFloorDimensions()[0];
+	//var height = getFloorDimensions()[1];
+
+	// layoutList = shuffle(clusterList, orderings, width, height);
 
 	// return layoutToJSON(layoutList);
 }	

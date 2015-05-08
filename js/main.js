@@ -104,8 +104,13 @@ $(function() {
                 params["param_living"] = 0;
             }
 
+            //console.log(params);
+
+            var roomList = JSONtoRoomList(params);
+            console.log(roomList);
+
             // call the blueprint function
-            var blueprintsJSON = createBlueprints(params);
+            //var blueprintsJSON = createBlueprints(params);
 
         }
 
