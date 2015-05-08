@@ -216,6 +216,53 @@ var shuffle = function(clusters, orderings) {
 	}
 }
 
+// Convert layouts to parsable format for 2D-visualization generation
+var layoutToJson = function(layouts) {
+	var finalOutput = new Object();
+	var roomCount = 0;
+
+	for (int i = 0; i < layouts.length; i++) {
+		var clusters = layout[i].clusters;
+		var roomsOutput = new Object();
+		var doorsOutput = new Object();
+
+		for (int j = 0; j < clusters.length; j++) {
+			var c = clusters[j];
+			var isRotated = c.rotated;
+			var rooms = clusters[j].roomList;
+			var clusterLength = 0;
+
+			for (int k = 0; k < rooms.length; k++) {
+				var r = rooms[k];
+				var roomHeight = isRotated ? r.width : r.height;
+				var roomWidth = isRotated ? r.height : r.width;
+
+				// Add room's coords
+				if (isRotated) { // Rooms go vertically
+					roomsOutput[roomCount] = [c.minX, c.minY+clusterLength, c.minX+roomWidth, clusterLength+roomHeight];
+					clusterLength += roomHeight;
+				} else { // Rooms go horizontally
+					roomsOutput[roomCount] = [c.minX+clusterLength, c.minY, clusterLength+roomWidth, c.minY+roomHeight];
+					clusterLength += roomWidth;
+				}
+
+				// Add door's coords
+				if (isRotated) {
+					doorsOutput[roomCount] = [r.door.xCenter, r.door.yCenter-1, r.door.xCenter+1, r.door.yCenter+1];
+				} else {
+					doorsOutput[roomCount] = [r.door.xCenter-1, r.door.yCenter, r.door.xCenter+1, r.door.yCenter+1];
+				}
+				
+				roomCount += 1;
+			}
+		}
+
+		finalOutput[i] = {"roomCount": roomCount, "rooms": roomsOutput, "doors": doorsOutput};
+	}
+
+	return finalOutput;
+}
+
 // called by main.js 
 // params is a JSON of all user constraints
 // returns JSON of rectangles of all layouts to draw on visualization for a given cluster
