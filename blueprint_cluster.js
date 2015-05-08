@@ -8,13 +8,19 @@
 
 // Define a room object
 // Room objects: attr= name, dimension, floor 
-function Room(name, width, height){
+function Room(name, width, height) {
 
    this.name = name;
    this.width = width;
    this.height = height;
    //this.floor = floor;
    this.door = undefined;
+}
+
+function Door(xCenter, yCenter, isRotated) {
+   this.xCenter = xCenter;
+   this.yCenter = yCenter;
+   this.rotated = isRotated;
 }
 
 //MAKING SAMPLE ROOM LIST: 
@@ -117,7 +123,6 @@ function JSONtoRoomList(json) {
 
 // input: a list of Room objects
 // output: a set of 4 clusters, where each cluster is a rectangle which holds a set of rooms
-
  
 function shuffle(array) {
   // source: http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
@@ -183,10 +188,15 @@ function createClusterList(groupList) {
     var totalWidth = 0;
     var totalHeight = 0;
     var roomList = groupList[i];
+    // console.log("new cluster");
     for (roomIndex = 0; roomIndex<roomList.length; roomIndex++) {
       var room = roomList[roomIndex];
-      totalWidth = Math.max(room.width);
-      totalHeight += room.height;
+      console.log(room);
+      // totalWidth = Math.max(room.width, totalWidth);
+      // totalHeight += room.height;
+      totalWidth += room.width;
+      totalHeight = Math.max(room.height, totalHeight);
+      // console.log(totalWidth+" "+totalHeight);
     }
     var cluster = new Cluster(roomList, totalWidth, totalHeight);
     clusterList.push(cluster);

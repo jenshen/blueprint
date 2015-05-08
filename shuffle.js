@@ -2,11 +2,15 @@ var Layout = function(width, height, clusters) {
 	this.width = width;
 	this.height = height;
 	this.clusters = clusters.slice(); // List of clusters to place
-	// this.arrangements = new Object(); // All created arrangements
+	this.numRooms = 0;
+	for (var r = 0; r < this.clusters.length; r++) {
+		this.numRooms += this.clusters[r].roomList.length;
+	}
+
 	this.HALLWAY_WIDTH = 5;
 	this.DOOR_WIDTH = 3;
 	this.OPEN_WALLS = [['right', 'bottom'], // [rotated, unrotated]; corners 1-4
-		['bottom', 'left'],
+		['left', 'bottom'],
 		['left', 'top'],
 		['right', 'top']]
 
@@ -21,7 +25,7 @@ var Layout = function(width, height, clusters) {
 		}
 	}
 
-	console.log(this.grid);
+	// console.log(this.grid);
 
 	// adds a foyer (size: width=5 by height=10) to the same location of each apartment where the door goes
 	// location = bottom center of each layout along the wider wall
@@ -41,13 +45,19 @@ var Layout = function(width, height, clusters) {
 
 	// returns whether adding cluster was successful
 	this.addCluster = function(cluster, corner) {
+		console.log("corner "+corner);
+		console.log(cluster);
 		var clusterWidth = cluster.width;
 		var clusterHeight = cluster.height;
+
 		// Flip dimensions if cluster is rotated
 		if (cluster.rotated) {
 			clusterWidth = cluster.height;
 			clusterHeight = cluster.width;
 		}
+		
+		console.log(clusterWidth +" "+clusterHeight);
+
 
 		// Set boundary coordinates of cluster in grid
 		var minX, maxX, minY, maxY;
@@ -65,19 +75,20 @@ var Layout = function(width, height, clusters) {
 			minY = 0;
 			maxY = clusterHeight-1;
 		} else if (corner == 3) { // Bottom-right
-			hallwayDeltas = [-this.HALLWAY_WIDTH, 0, this.HALLWAY_WIDTH, 0];
+			hallwayDeltas = [-this.HALLWAY_WIDTH, 0, -this.HALLWAY_WIDTH, 0];
 			minX = this.width-clusterWidth;
 			maxX = this.width-1;
 			minY = this.height-clusterHeight;
 			maxY = this.height-1;
 		} else if (corner == 4) { // Bottom-left
-			hallwayDeltas = [0, this.HALLWAY_WIDTH, this.HALLWAY_WIDTH, 0];
+			hallwayDeltas = [0, this.HALLWAY_WIDTH, -this.HALLWAY_WIDTH, 0];
 			minX = 0;
 			maxX = clusterWidth-1;
 			minY = this.height-clusterHeight;
 			maxY = this.height-1;
 		}
 
+		console.log("minX, corner: " + minX + " " + corner);
 		if (minX == undefined) return false; // Boundaries not set from invalid corner
 		
 		var d_minX = hallwayDeltas[0];
@@ -88,7 +99,9 @@ var Layout = function(width, height, clusters) {
 		// IS VALID PLACEMENT
 		for (var x = minX + d_minX; x < maxX + d_maxX; x++) {
 			for (var y = minY + d_minY; y < maxY + d_maxY; y++) {
-				if (this.grid[y][x] == 2) return false;
+				if (this.grid[y][x] == 2) {
+					return false;
+				}
 			}
 		}
 
@@ -107,45 +120,50 @@ var Layout = function(width, height, clusters) {
 		}
 
 		// UPDATE X, Y POSITION
+		console.log("x, y: "+minX+" "+minY);
 		cluster.xPos = minX;
 		cluster.yPos = minY;
 
 		// ADD DOORS
-		var openWall = OPEN_WALLS[corner-1][cluster.rotated ? 0 : 1];
+		var openWall = this.OPEN_WALLS[corner-1][cluster.rotated ? 0 : 1];
 		var rooms = cluster.roomList;
 		var totalDistance = 0;
 		if (openWall == 'left' || openWall == 'right') {
 			// Cluster is rotated
+			var clusterLength = 0;
 			for (var i = 0; i < rooms.length; i++) {
 				// Must flip height + width since cluster is rotated
 				var roomHeight = rooms[i].width;
 
 				// Initially place doors on left side of cluster
-				var xCenter = xMin + 0;
-				var yCenter = yMin + Math.floor(roomHeight/2);
+				var xCenter = minX + 0;
+				var yCenter = minY + Math.floor(roomHeight/2) + clusterLength;
+				clusterLength += roomHeight;
 
 				// Move doors to right side of cluster
-				if (openWall == 'right') xCenter += (cluster.Width-1); 
+				if (openWall == 'right') xCenter += (cluster.width-1); 
 
 				// Door created with coordinates relative to entire layout + rotation included
 				// Coordinates are center of door
-				rooms[i].door = Door(xCenter, yCenter, cluster.rotated);
+				rooms[i].door = new Door(xCenter, yCenter, cluster.rotated);
 			}
 		} else if (openWall == 'top' || openWall == 'bottom') {
+			var clusterLength = 0;
 			// Cluster NOT rotated
 			for (var i = 0; i < rooms.length; i++) {
 				// Must flip height + width since cluster is rotated
 				var roomWidth = rooms[i].width;
 
 				// Initially place doors on top side of cluster
-				var xCenter = xMin + Math.floor(roomWidth/2);
-				var yCenter = yMin + 0;
+				var xCenter = minX + Math.floor(roomWidth/2) + clusterLength;
+				var yCenter = minY + 0;
+				clusterLength += roomWidth;
 
 				// Move doors to bottom side of cluster
-				if (openWall == 'bottom') yCenter += (cluster.Height-1); 
+				if (openWall == 'bottom') yCenter += (cluster.height-1); 
 
 				// Door created with coordinates relative to entire layout + rotation included
-				rooms[i].door = Door(xCenter, yCenter, cluster.rotated);
+				rooms[i].door = new Door(xCenter, yCenter, cluster.rotated);
 			}
 		}
 
@@ -156,8 +174,9 @@ var Layout = function(width, height, clusters) {
 // clusters already ordered largest to smallest
 // orderings: list of corner ordering lists to try from top-left, going clockwise
 // returns: list of generated layouts
-var shuffle = function(clusters, orderings, width, height) {
+var shuffleClusters = function(clusters, orderings, width, height) {
 	var layouts = new Array();
+	// console.log("orderings" + orderings);
 	
 	for (var i = 0; i < orderings.length; i++) {
 		var layout = new Layout(width, height, clusters);
@@ -166,12 +185,16 @@ var shuffle = function(clusters, orderings, width, height) {
 
 		layout.addFoyer(); // Add foyer first to mark space
 
+		// console.log(layout.grid);
+
 		for (var j = 0; j < clusters.length; j++) {
 			var clusterToPlace = clusters[j];
 			if (!layout.addCluster(clusterToPlace, ordering[j])) {
+				console.log("cluster failed");
 				layoutSuccessful = false;
 				break;
 			}
+			console.log("cluster placed successfully ordering: " + i + "cluster: " + j);
 		}
 
 		if (layoutSuccessful) layouts.push(layout);
@@ -184,32 +207,73 @@ var shuffle = function(clusters, orderings, width, height) {
 // params is a JSON of all user constraints
 // returns JSON of rectangles of all layouts to draw on visualization for a given cluster
 function createBlueprints(params) {
-	// calls roomList = JSONtoRoomList(params)
-	var roomList = JSONtoRoomList(params);
+	var width = getFloorDimensions(params)[0];
+	var height = getFloorDimensions(params)[1];
 
-	// calls groupList = groupRooms(roomList)
+	// // calls roomList = JSONtoRoomList(params)
+	// var roomList = JSONtoRoomList(params);
 
-	// calls clusterList = createClusterList(groupList)
+	// // calls groupList = groupRooms(roomList)
+	// var groupList = groupRooms(roomList);
 
-	// make orderings = getRoomPlacementOrder()
+	// // calls clusterList = createClusterList(groupList)
+	// var clusterList = createClusterList(groupList);
 
-	//var width = getFloorDimensions()[0];
-	//var height = getFloorDimensions()[1];
+	// // make orderings = getRoomPlacementOrder()
+	// // var orderings = [getRoomPlacementOrder(), getRoomPlacementOrder(), getRoomPlacementOrder(), getRoomPlacementOrder()];
 
-	// layoutList = shuffle(clusterList, orderings, width, height);
+	// var orderings = [getRoomPlacementOrder()];
 
-	// return layoutToJSON(layoutList);
+	
+
+	// // var width = 50;
+	// // var height = 50;
+	// var layoutList = shuffleClusters(clusterList, orderings, width, height);
+
+	// var layoutJson = layoutToJson(layoutList);
+	var numLayouts = 3;
+	// console.log(layoutJson);
+	var finalOutput = new Object();
+	for (var i = 0; i < numLayouts; i++) {
+		// calls roomList = JSONtoRoomList(params)
+		var roomList = JSONtoRoomList(params);
+
+		// calls groupList = groupRooms(roomList)
+		var groupList = groupRooms(roomList);
+
+		// calls clusterList = createClusterList(groupList)
+		var clusterList = createClusterList(groupList);
+
+		// make orderings = getRoomPlacementOrder()
+		// var orderings = [getRoomPlacementOrder(), getRoomPlacementOrder(), getRoomPlacementOrder(), getRoomPlacementOrder()];
+
+		var orderings = [getRoomPlacementOrder()];
+
+		// var width = 50;
+		// var height = 50;
+		var layoutList = shuffleClusters(clusterList, orderings, width, height);
+
+		var layoutJson = layoutToJson(layoutList);
+
+		console.log(layoutJson);
+		finalOutput[i] = layoutJson;
+	}
+
+	finalOutput["layoutCount"] = numLayouts;
+	console.log(finalOutput);
+	return finalOutput;
 }
 
 // Convert layouts to parsable format for 2D-visualization generation
 var layoutToJson = function(layouts) {
 	var finalOutput = new Object();
-	var roomCount = 0;
 
 	for (var i = 0; i < layouts.length; i++) {
-		var clusters = layout[i].clusters;
+		var clusters = layouts[i].clusters;
 		var roomsOutput = new Object();
 		var doorsOutput = new Object();
+		var roomCount = 0;
+		var numRooms = layouts[i].numRooms;
 
 		for (var j = 0; j < clusters.length; j++) {
 			var c = clusters[j];
@@ -224,10 +288,10 @@ var layoutToJson = function(layouts) {
 
 				// Add room's coords
 				if (isRotated) { // Rooms go vertically
-					roomsOutput[roomCount] = [c.minX, c.minY+clusterLength, c.minX+roomWidth, clusterLength+roomHeight];
+					roomsOutput[roomCount] = [c.xPos, c.yPos+clusterLength, c.xPos+roomWidth, c.yPos+clusterLength+roomHeight];
 					clusterLength += roomHeight;
 				} else { // Rooms go horizontally
-					roomsOutput[roomCount] = [c.minX+clusterLength, c.minY, clusterLength+roomWidth, c.minY+roomHeight];
+					roomsOutput[roomCount] = [c.xPos+clusterLength, c.yPos, c.xPos+clusterLength+roomWidth, c.yPos+roomHeight];
 					clusterLength += roomWidth;
 				}
 
@@ -242,7 +306,7 @@ var layoutToJson = function(layouts) {
 			}
 		}
 
-		finalOutput[i] = {"roomCount": roomCount, "rooms": roomsOutput, "doors": doorsOutput};
+		finalOutput[i] = {"roomCount": layouts[i].numRooms, "rooms": roomsOutput, "doors": doorsOutput};
 	}
 
 	return finalOutput;
