@@ -211,15 +211,8 @@ function getRoomPlacementOrder() {
 
 // returns width and height of floor
 function getFloorDimensions(json) {
-  var floorDimensions = [0, 0]; // [width, height]
-  JSON.parse(json, function(k, v) {
-  if (k === 'param_width') { 
-    floorDimensions[0] = v; 
-  } else if (k == 'param_length') {
-    floorDimensions[1] = v; 
-  } 
+  var floorDimensions = [json['param_width'], json['param_length']]; // [width, height]
   return floorDimensions;        
-  }); 
 }
 
 

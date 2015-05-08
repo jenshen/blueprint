@@ -107,10 +107,13 @@ $(function() {
             //console.log(params);
 
             var roomList = JSONtoRoomList(params);
-            console.log(roomList);
+            //console.log(roomList);
 
             // call the blueprint function
             var blueprintsJSON = createBlueprints(params);
+
+            var floorDim = getFloorDimensions(params);
+            console.log(floorDim);
 
         }
 
