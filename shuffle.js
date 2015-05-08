@@ -285,12 +285,17 @@ var layoutToJson = function(layouts) {
 				var roomHeight = isRotated ? r.width : r.height;
 				var roomWidth = isRotated ? r.height : r.width;
 
+				var roomData = new Object();
 				// Add room's coords
 				if (isRotated) { // Rooms go vertically
-					roomsOutput[roomCount] = [c.xPos, c.yPos+clusterLength, c.xPos+roomWidth, c.yPos+clusterLength+roomHeight];
+					roomData["type"] = r.name;
+					roomData["coords"] = [c.xPos, c.yPos+clusterLength, c.xPos+roomWidth, c.yPos+clusterLength+roomHeight];
+					roomsOutput[roomCount] = roomData;
 					clusterLength += roomHeight;
 				} else { // Rooms go horizontally
-					roomsOutput[roomCount] = [c.xPos+clusterLength, c.yPos, c.xPos+clusterLength+roomWidth, c.yPos+roomHeight];
+					roomData["type"] = r.name;
+					roomData["coords"] = [c.xPos+clusterLength, c.yPos, c.xPos+clusterLength+roomWidth, c.yPos+roomHeight];
+					roomsOutput[roomCount] = roomData;
 					clusterLength += roomWidth;
 				}
 
