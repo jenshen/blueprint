@@ -1,10 +1,13 @@
 // This allows the Javascript code inside this block to only run when the page
 // has finished loading in the browser.
 $(function() {
+    var entering_params = true;
+    var layouts_current = 0;
+    var layouts_total = 0;
+
     $('#parameterModal').modal('show');
 
     $("#createBlueprints").click(function(evt) {
-
         evt.preventDefault();
 
         var param_width = document.getElementById("inputWidth").value;
@@ -59,6 +62,7 @@ $(function() {
 
         if (param_width && param_length && param_bedMaster && param_bedStandard && param_bathFull && param_bathHalf) {
             $('#parameterModal').modal('hide');
+            entering_params = false;
 
             $("#inputWidthGroup").removeClass("has-error");
             $("#inputWidthGroup").removeClass("has-error");
@@ -105,23 +109,75 @@ $(function() {
             }
 
             // call the blueprint function
+            layouts_current = 1;
+            layouts_total = 25;
+            $("#menu-top-control-layout").empty();
+            $("#menu-top-control-layout").append(" " + layouts_current + "/" + layouts_total + " ");
+        }
+    });
+    
+    //////////////////////////////////////////////////////////
+    // CONTROL LAYOUT CHANGES
+    //////////////////////////////////////////////////////////
 
+    $("#swipe-left").click(function(evt) {
+        layouts_current = layouts_current - 1;
+        if (layouts_current <= 0) {
+            layouts_current = layouts_total;
         }
 
-    });
-
-    
-    $("#swipe-left").click(function(evt) {
-        alert("left");
+        $("#menu-top-control-layout").empty();
+        $("#menu-top-control-layout").append(" " + layouts_current + "/" + layouts_total + " ");
     });
 
     $("#swipe-right").click(function(evt) {
-        alert("right");
+        layouts_current = layouts_current + 1;
+        if (layouts_current > layouts_total) {
+            layouts_current = 1;
+        }
+
+        $("#menu-top-control-layout").empty();
+        $("#menu-top-control-layout").append(" " + layouts_current + "/" + layouts_total + " ");
     });
-	
+
+    $(document).keydown( function(e) {
+        if (!entering_params) {
+            var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+            if (key == 37) {
+                e.preventDefault();
+                $("#swipe-left").click();
+            }
+            else if (key == 39) {
+                e.preventDefault();
+                $("#swipe-right").click();
+            }
+        }
+    });
+
+
+
+    //////////////////////////////////////////////////////////
+    // SAVE SCAD FILE
+    //////////////////////////////////////////////////////////
+    $("#btn-download-scad").click(function(evt) {
+        var link = document.getElementById("blob-dump");
+
+        var text = "";
+
+        var blob = new Blob([text], {type: 'text/plain'});
+        var url = window.URL.createObjectURL(blob);
+
+        link.href = url;
+        link.click();
+
+        window.URL.revokeObjectURL(url);
+    });
+
+    $("#btn-download-png").click(function(evt) {
+        alert("png!");
+    });
 
 });
-
 
 
 

@@ -83,7 +83,7 @@
                     </div>
 
                     <div class="form-group" id="inputBathHalfGroup">
-                      <label for="inputBathHalf" class="col-sm-3 control-label">Bed (Standard)</label>
+                      <label for="inputBathHalf" class="col-sm-3 control-label">Bath (Half)</label>
                       <div class="col-sm-9">
                         <input type="text" class="form-control" id="inputBathHalf" placeholder="count">
                       </div>
@@ -148,13 +148,20 @@
         </div>
 
 
-        <div class="menu-top">
-          <a class="menu-title"><span class="glyphicon glyphicon-triangle-left btn-left" aria-hidden="true" id="swipe-left"></span> 1/25 <span class="glyphicon glyphicon-triangle-right btn-right" aria-hidden="true" id="swipe-right"></a>
+        <div class="menu-top" id="menu-top-control">
+          <a class="menu-title"><span class="glyphicon glyphicon-triangle-left btn-left" aria-hidden="true" id="swipe-left"></span><span id="menu-top-control-layout"> 1/25 </span><span class="glyphicon glyphicon-triangle-right btn-right" aria-hidden="true" id="swipe-right"></span></a>
+        </div>
+
+        <div class="menu-bottom" id="menu-bottom-control">
+          <button type="button" class="btn" id="btn-download-scad" aria-label="Left Align">
+            <span class="glyphicon glyphicon-save" aria-hidden="true"> .scad</span>
+          </button>
+          <button type="button" class="btn" id="btn-download-png" aria-label="Left Align">
+            <span class="glyphicon glyphicon-save" aria-hidden="true"> .png</span>
+          </button>
         </div>
     </div>
-
-
-
+    <a id="blob-dump" download="blueprint.scad"></a>
 </body>
 
 </html>
