@@ -127,3 +127,22 @@ html, body {
 #blob-dump {
     display: none;
 }
+
+.containter-layout-canvas {
+    position: absolute;
+    width: 100%;
+    height: 600px;
+    top:150px;
+}
+
+.containter-layout-canvas {
+    position: absolute;
+    width: 100%;
+    height: 600px;
+    top:150px;
+}
+
+.layout-canvas-holder {
+    text-align: center;
+    display: block;
+}

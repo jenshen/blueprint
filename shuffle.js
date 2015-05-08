@@ -45,8 +45,8 @@ var Layout = function(width, height, clusters) {
 
 	// returns whether adding cluster was successful
 	this.addCluster = function(cluster, corner) {
-		console.log("corner "+corner);
-		console.log(cluster);
+		//console.log("corner "+corner);
+		//console.log(cluster);
 		var clusterWidth = cluster.width;
 		var clusterHeight = cluster.height;
 
@@ -56,7 +56,7 @@ var Layout = function(width, height, clusters) {
 			clusterHeight = cluster.width;
 		}
 		
-		console.log(clusterWidth +" "+clusterHeight);
+		//console.log(clusterWidth +" "+clusterHeight);
 
 
 		// Set boundary coordinates of cluster in grid
@@ -88,7 +88,7 @@ var Layout = function(width, height, clusters) {
 			maxY = this.height-1;
 		}
 
-		console.log("minX, corner: " + minX + " " + corner);
+		//console.log("minX, corner: " + minX + " " + corner);
 		if (minX == undefined) return false; // Boundaries not set from invalid corner
 		
 		var d_minX = hallwayDeltas[0];
@@ -120,7 +120,7 @@ var Layout = function(width, height, clusters) {
 		}
 
 		// UPDATE X, Y POSITION
-		console.log("x, y: "+minX+" "+minY);
+		//console.log("x, y: "+minX+" "+minY);
 		cluster.xPos = minX;
 		cluster.yPos = minY;
 
@@ -190,11 +190,11 @@ var shuffleClusters = function(clusters, orderings, width, height) {
 		for (var j = 0; j < clusters.length; j++) {
 			var clusterToPlace = clusters[j];
 			if (!layout.addCluster(clusterToPlace, ordering[j])) {
-				console.log("cluster failed");
+			//	console.log("cluster failed");
 				layoutSuccessful = false;
 				break;
 			}
-			console.log("cluster placed successfully ordering: " + i + "cluster: " + j);
+			//console.log("cluster placed successfully ordering: " + i + "cluster: " + j);
 		}
 
 		if (layoutSuccessful) layouts.push(layout);
@@ -255,12 +255,11 @@ function createBlueprints(params) {
 
 		var layoutJson = layoutToJson(layoutList);
 
-		console.log(layoutJson);
 		finalOutput[i] = layoutJson;
 	}
 
 	finalOutput["layoutCount"] = numLayouts;
-	console.log(finalOutput);
+	//console.log(finalOutput);
 	return finalOutput;
 }
 

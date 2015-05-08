@@ -191,7 +191,7 @@ function createClusterList(groupList) {
     // console.log("new cluster");
     for (roomIndex = 0; roomIndex<roomList.length; roomIndex++) {
       var room = roomList[roomIndex];
-      console.log(room);
+    //  console.log(room);
       // totalWidth = Math.max(room.width, totalWidth);
       // totalHeight += room.height;
       totalWidth += room.width;
