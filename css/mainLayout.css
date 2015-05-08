@@ -1,0 +1,90 @@
+﻿/*!
+ * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ *#006699;
+ *#003366
+*/
+/* Toggle Styles */
+html, body {
+    width:100%;
+    height:100%;
+}
+
+.wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+.navbar-colored {
+    background-color: #006699;
+}
+
+.navbar-title,
+.navbar-title:hover {
+    text-align: center;
+    display: block;
+    text-decoration: none;
+    color: #003366;
+    height: 50px;
+    font-size: 40px;
+    line-height: 22px;
+    font-family: 'Voltaire', sans-serif;
+}
+
+.menu-title,
+.menu-title:hover {
+    text-align: center;
+    display: block;
+    text-decoration: none;
+    color: #fff;
+    height: 50px;
+    font-size: 22px;
+    line-height: 50px;
+    font-family: 'Voltaire', sans-serif;
+}
+
+.btn-left {
+    color:#fff;
+}
+
+.btn-left:hover {
+    color:#006699;
+}
+
+.btn-right {
+    color:#fff;
+}
+
+.btn-right:hover {
+    color:#006699;
+}
+
+.navbar-brand {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    text-align: center;
+    margin: auto;
+}
+
+.menu-top {
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    background-color: #003366;
+    top:50px;
+}
+
+.btn-flatten {
+    background-color: #006699;
+    color: #fff;
+}
+
+.btn-flatten:hover {
+    border-color: #006699;
+    border-width: 1px;
+    background-color: #fff;
+    color: #006699;
+}

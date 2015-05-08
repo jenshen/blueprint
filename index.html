@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>BLUEPRINT</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" type="text/css" href="external_dependencies/bootstrap-3.3.4-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="external_dependencies/bootstrap-3.3.4-dist/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/mainLayout.css" />
+
+    <!-- Custom CSS -->
+    <link href='http://fonts.googleapis.com/css?family=Voltaire' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="external_dependencies/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="external_dependencies/bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
+    
+
+    <script type="text/javascript" src="js/main.js"></script>
+
+</head>
+
+<body>
+
+    <!-- Add applicant modal -->
+      <div class="modal fade" id="parameterModal" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" style="text-align:left;color:#003366;"><b>Desired Parameters</b></h4>
+            </div>
+            <div class="modal-body" align="center">
+                <form class="form-horizontal">
+
+                    <div class="form-group">
+                      <h4 class="col-sm-3 control-label" style="text-align:left;color:#006699;"><b>Dimensions:</b></h4>
+                    </div>
+
+                    <div class="form-group" id="inputWidthGroup">
+                      <label for="inputWidth" class="col-sm-3 control-label">Width (Ft)</label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control" id="inputWidth" placeholder="feet">
+                      </div>
+                    </div>
+
+                    <div class="form-group" id="inputLengthGroup">
+                      <label for="inputLength" class="col-sm-3 control-label">Length (Ft)</label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control" id="inputLength" placeholder="feet">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <h4 class="col-sm-3 control-label" style="text-align:left;color:#006699;"><b>Rooms:</b></h4>
+                    </div>
+                    
+                    <div class="form-group" id="inputBedMasterGroup">
+                      <label for="inputBedMaster" class="col-sm-3 control-label">Bed (Master)</label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control" id="inputBedMaster" placeholder="count">
+                      </div>
+                    </div>
+
+                    <div class="form-group" id="inputBedStandardGroup">
+                      <label for="inputBedStandard" class="col-sm-3 control-label">Bed (Standard)</label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control" id="inputBedStandard" placeholder="count">
+                      </div>
+                    </div>
+
+                    <div class="form-group" id="inputBathFullGroup">
+                      <label for="inputBathFull" class="col-sm-3 control-label">Bath (Full)</label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control" id="inputBathFull" placeholder="count">
+                      </div>
+                    </div>
+
+                    <div class="form-group" id="inputBathHalfGroup">
+                      <label for="inputBathHalf" class="col-sm-3 control-label">Bed (Standard)</label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control" id="inputBathHalf" placeholder="count">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <h4 class="col-sm-3 control-label" style="text-align:left;color:#006699;"><b>Amenities:</b></h4>
+                    </div>
+
+                    <div class="form-group" id="inputKitchenGroup">
+                        <label class="col-sm-3 control-label">Kitchen</label>
+                        <div class="col-sm-1">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="inputKitchen">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="inputDiningGroup">
+                        <label class="col-sm-3 control-label">Dining Room</label>
+                        <div class="col-sm-1">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="inputDining">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="inputLivingGroup">
+                        <label class="col-sm-3 control-label">Living Room</label>
+                        <div class="col-sm-1">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="inputLiving">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="col-sm-offset-8 col-sm-4">
+                        <button type="submit" class="btn btn-flatten" id="createBlueprints">Create Blueprints</button>
+                      </div>
+                    </div>
+
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    <div class="wrapper">
+        <div class="navbar navbar-fixed-top navbar-colored">
+            <div class="navbar-header">
+              <a class="navbar-brand navbar-title">BLUEPRINT</a>
+            </div>
+        </div>
+
+
+        <div class="menu-top">
+          <a class="menu-title"><span class="glyphicon glyphicon-triangle-left btn-left" aria-hidden="true" id="swipe-left"></span> 1/25 <span class="glyphicon glyphicon-triangle-right btn-right" aria-hidden="true" id="swipe-right"></a>
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>
