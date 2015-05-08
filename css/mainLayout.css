@@ -20,6 +20,34 @@ html, body {
     background-color: #006699;
 }
 
+#btn-download-scad {
+    background-color: #003366;
+    color: #fff;
+    float:right;
+    margin-top: 8px;
+    height:34px;
+    width:100px;
+    margin-right: 8px;
+}
+
+#btn-download-scad:hover {
+    background-color: #006699;
+}
+
+#btn-download-png {
+    background-color: #003366;
+    color: #fff;
+    float:right;
+    margin-top: 8px;
+    height:34px;
+    width:100px;
+    margin-right: 8px;
+}
+
+#btn-download-png:hover {
+    background-color: #006699;
+}
+
 .navbar-title,
 .navbar-title:hover {
     text-align: center;
@@ -77,6 +105,13 @@ html, body {
     top:50px;
 }
 
+.menu-bottom {
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    bottom:0px;
+}
+
 .btn-flatten {
     background-color: #006699;
     color: #fff;
@@ -87,4 +122,8 @@ html, body {
     border-width: 1px;
     background-color: #fff;
     color: #006699;
+}
+
+#blob-dump {
+    display: none;
 }

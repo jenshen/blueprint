@@ -108,6 +108,7 @@ $(function() {
                 params["param_living"] = 0;
             }
 
+
             // call the blueprint function
             layouts_current = 1;
             layouts_total = 25;
