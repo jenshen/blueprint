@@ -10,7 +10,6 @@ var Layout = function(width, height, clusters) {
 		['left', 'top'],
 		['right', 'top']]
 
-
 	// grid is a 2D array marking which squares have been filled by room(s)
 	// a square contains a # which indicates what kind of room it is a part of:
 	// 0 = empty; 1 = hallway; 2 = room
@@ -41,8 +40,6 @@ var Layout = function(width, height, clusters) {
 	}
 
 	// returns whether adding cluster was successful
-	
-
 	this.addCluster = function(cluster, corner) {
 		var clusterWidth = cluster.width;
 		var clusterHeight = cluster.height;
@@ -61,7 +58,6 @@ var Layout = function(width, height, clusters) {
 			maxX = clusterWidth-1;
 			minY = 0;
 			maxY = clusterHeight-1;
-			hallwayDeltas = 
 		} else if (corner == 2) { // Top-right
 			hallwayDeltas = [-this.HALLWAY_WIDTH, 0, 0, this.HALLWAY_WIDTH];
 			minX = this.width-clusterWidth;
@@ -83,7 +79,6 @@ var Layout = function(width, height, clusters) {
 		}
 
 		if (minX == undefined) return false; // Boundaries not set from invalid corner
-
 		
 		var d_minX = hallwayDeltas[0];
 		var d_maxX = hallwayDeltas[1];
@@ -98,8 +93,8 @@ var Layout = function(width, height, clusters) {
 		}
 
 		// MARK HALLWAY FILLED
-		for (var x = minX+d_minX; x < maxX+d_maxX; x++) {
-			for (var y = minY+d_minY; y < maxY+d_maxY; y++) {
+		for (var x = minX + d_minX; x < maxX + d_maxX; x++) {
+			for (var y = minY + d_minY; y < maxY + d_maxY; y++) {
 				this.grid[y][x] = 1;
 			}
 		}
@@ -111,12 +106,6 @@ var Layout = function(width, height, clusters) {
 			}
 		}
 
-		// var updatedCluster = Cluster(cluster.roomList, cluster.width, cluster.height);
-		// updatedCluster.rotated = cluster.rotated;
-		// updatedCluster.xPos = minX;
-		// updatedCluster.yPos = minY;
-		// arrangements.add(updatedCluster);
-
 		// UPDATE X, Y POSITION
 		cluster.xPos = minX;
 		cluster.yPos = minY;
@@ -127,7 +116,7 @@ var Layout = function(width, height, clusters) {
 		var totalDistance = 0;
 		if (openWall == 'left' || openWall == 'right') {
 			// Cluster is rotated
-			for (int i = 0; i < rooms.length; i++) {
+			for (var i = 0; i < rooms.length; i++) {
 				// Must flip height + width since cluster is rotated
 				var roomHeight = rooms[i].width;
 
@@ -144,7 +133,7 @@ var Layout = function(width, height, clusters) {
 			}
 		} else if (openWall == 'top' || openWall == 'bottom') {
 			// Cluster NOT rotated
-			for (int i = 0; i < rooms.length; i++) {
+			for (var i = 0; i < rooms.length; i++) {
 				// Must flip height + width since cluster is rotated
 				var roomWidth = rooms[i].width;
 
@@ -162,56 +151,54 @@ var Layout = function(width, height, clusters) {
 
 		return true;
 	}
-
-	// this.isValidPlacement = function(cluster, corner, isRotated) {
-	// 	var clusterWidth = cluster.width;
-	// 	var clusterHeight = cluster.height;
-	// 	if (isRotated) {
-	// 		clusterWidth = cluster.height;
-	// 		clusterHeight = cluster.width;
-	// 	}
-
-	// 	// Checks the four corners of the cluster on the grid to be empty
-	// 	// All squares in between should therefore be empty
-	// 	// Checks cluster's corners top-left to bottom-left in clockwise order
-	// 	var roomCanBePlaced 
-	// 	if (corner == 1) {
-	// 		return (this.grid[0][0] == 0
-	// 			&& this.grid[0][clusterWidth-1] == 0
-	// 			&& this.grid[clusterHeight-1][clusterWidth-1] == 0
-	// 			&& this.grid[clusterHeight-1][0] == 0);
-	// 	} else if (corner == 2) {
-	// 		return (this.grid[0][this.width-clusterWidth] == 0
-	// 			&& this.grid[0][this.width-1] == 0
-	// 			&& this.grid[clusterHeight-1][this.width-1] == 0
-	// 			&& this.grid[clusterHeight-1][this.width-clusterWidth] == 0);
-	// 	} else if (corner == 3) {
-	// 		return (this.grid[this.height-clusterHeight][this.width-clusterWidth] == 0 
-	// 			&& this.grid[this.height-clusterHeight][this.width-1] == 0
-	// 			&& this.grid[this.height-1][this.width-1] == 0
-	// 			&& this.grid[this.height-1][this.width-clusterWidth] == 0);
-	// 	} else if (corner == 4) {
-	// 		return (this.grid[this.height-clusterHeight][0] == 0 
-	// 			&& this.grid[this.height-clusterHeight][clusterWidth-1] == 0 
-	// 			&& this.grid[clusterHeight-1][clusterWidth-1] == 0
-	// 			&& this.grid[clusterHeight-1][0] == 0);
-	// 	}
-	// }
 }
 
 // clusters already ordered largest to smallest
 // orderings: list of corner ordering lists to try from top-left, going clockwise
+// returns: list of generated layouts
 var shuffle = function(clusters, orderings, width, height) {
-	var layout = new Layout(width, height, clusters);
-
+	var layouts = new Array();
+	
 	for (var i = 0; i < orderings.length; i++) {
+		var layout = new Layout(width, height, clusters);
 		var ordering = orderings[i];
+		var layoutSuccessful = true;
+
 		layout.addFoyer(); // Add foyer first to mark space
-		for (var j = 0; j < clusters.length) {
+
+		for (var j = 0; j < clusters.length; j++) {
 			var clusterToPlace = clusters[j];
-			if (!layout.addCluster(clusterToPlace, ordering[j]) break;
+			if (!layout.addCluster(clusterToPlace, ordering[j])) {
+				layoutSuccessful = false;
+				break;
+			}
 		}
+
+		if (layoutSuccessful) layouts.push(layout);
 	}
+
+	return layouts;
+}
+
+// called by main.js 
+// params is a JSON of all user constraints
+// returns JSON of rectangles of all layouts to draw on visualization for a given cluster
+function createBlueprints(params) {
+	// calls roomList = JSONtoRoomList(params)
+	var roomList = JSONtoRoomList(params);
+
+	// calls groupList = groupRooms(roomList)
+
+	// calls clusterList = createClusterList(groupList)
+
+	// make orderings = getRoomPlacementOrder()
+
+	//var width = getFloorDimensions()[0];
+	//var height = getFloorDimensions()[1];
+
+	// layoutList = shuffle(clusterList, orderings, width, height);
+
+	// return layoutToJSON(layoutList);
 }
 
 // Convert layouts to parsable format for 2D-visualization generation
@@ -219,18 +206,18 @@ var layoutToJson = function(layouts) {
 	var finalOutput = new Object();
 	var roomCount = 0;
 
-	for (int i = 0; i < layouts.length; i++) {
+	for (var i = 0; i < layouts.length; i++) {
 		var clusters = layout[i].clusters;
 		var roomsOutput = new Object();
 		var doorsOutput = new Object();
 
-		for (int j = 0; j < clusters.length; j++) {
+		for (var j = 0; j < clusters.length; j++) {
 			var c = clusters[j];
 			var isRotated = c.rotated;
 			var rooms = clusters[j].roomList;
 			var clusterLength = 0;
 
-			for (int k = 0; k < rooms.length; k++) {
+			for (var k = 0; k < rooms.length; k++) {
 				var r = rooms[k];
 				var roomHeight = isRotated ? r.width : r.height;
 				var roomWidth = isRotated ? r.height : r.width;
@@ -259,26 +246,6 @@ var layoutToJson = function(layouts) {
 	}
 
 	return finalOutput;
-}
-
-// called by main.js 
-// params is a JSON of all user constraints
-// returns JSON of rectangles of all layouts to draw on visualization for a given cluster
-function createBlueprint(params) {
-	// calls roomList = JSONtoRoomList(params)
-
-	// calls groupList = groupRooms(roomList)
-
-	// calls clusterList = createClusterList(groupList)
-
-	// make orderings = getRoomPlacementOrder()
-
-	//var width = getFloorDimensions()[0];
-	//var height = getFloorDimensions()[1];
-
-	// layoutList = shuffle(clusterList, orderings, width, height);
-
-	// return layoutToJSON(layoutList);
 }	
 
 

@@ -110,7 +110,7 @@ $(function() {
             console.log(roomList);
 
             // call the blueprint function
-            //var blueprintsJSON = createBlueprints(params);
+            var blueprintsJSON = createBlueprints(params);
 
         }
 
