@@ -17,10 +17,6 @@ function Room(name, width, height, floor){
    this.door = undefined;
 }
 
-function Door(xCenter, yCenter, isRotated) {
-
-}
-
 //MAKING SAMPLE ROOM LIST: 
 var sampleRoomList = [];
 sampleRoomList.push(new Room("Master Bedroom", 10, 20, 1));

@@ -41,12 +41,9 @@ var Layout = function(width, height, clusters) {
 	}
 
 	// returns whether adding cluster was successful
-	this.addCluster = function(cluster, corner) {
-		this.markFilled(cluster, corner);
-		return false;
-	}
+	
 
-	this.markFilled = function(cluster, corner) {
+	this.addCluster = function(cluster, corner) {
 		var clusterWidth = cluster.width;
 		var clusterHeight = cluster.height;
 		// Flip dimensions if cluster is rotated
@@ -85,14 +82,22 @@ var Layout = function(width, height, clusters) {
 			maxY = this.height-1;
 		}
 
-		if (minX == undefined) return; // Boundaries not set from invalid corner
+		if (minX == undefined) return false; // Boundaries not set from invalid corner
 
-		// IS VALID PLACEMENT
-		// MARK HALLWAY FILLED
+		
 		var d_minX = hallwayDeltas[0];
 		var d_maxX = hallwayDeltas[1];
 		var d_minY = hallwayDeltas[2];
 		var d_maxY = hallwayDeltas[3];
+
+		// IS VALID PLACEMENT
+		for (var x = minX + d_minX; x < maxX + d_maxX; x++) {
+			for (var y = minY + d_minY; y < maxY + d_maxY; y++) {
+				if (this.grid[y][x] == 2) return false;
+			}
+		}
+
+		// MARK HALLWAY FILLED
 		for (var x = minX+d_minX; x < maxX+d_maxX; x++) {
 			for (var y = minY+d_minY; y < maxY+d_maxY; y++) {
 				this.grid[y][x] = 1;
@@ -154,6 +159,8 @@ var Layout = function(width, height, clusters) {
 				rooms[i].door = Door(xCenter, yCenter, cluster.rotated);
 			}
 		}
+
+		return true;
 	}
 
 	// this.isValidPlacement = function(cluster, corner, isRotated) {
@@ -208,3 +215,25 @@ var shuffle = function(clusters, orderings) {
 		}
 	}
 }
+
+// called by main.js 
+// params is a JSON of all user constraints
+// returns JSON of rectangles of all layouts to draw on visualization for a given cluster
+function createBlueprint(params) {
+	// calls roomList = JSONtoRoomList(params)
+
+	// calls groupList = groupRooms(roomList)
+
+	// calls clusterList = createClusterList(groupList)
+
+	// make orderings = getRoomPlacementOrder()
+
+	// layoutList = shuffle(clusterList, orderings);
+
+	// return layoutToJSON(layoutList);
+}	
+
+
+
+
+

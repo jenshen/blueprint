@@ -105,6 +105,7 @@ $(function() {
             }
 
             // call the blueprint function
+            var blueprintsJSON = createBlueprints(params);
 
         }
 
