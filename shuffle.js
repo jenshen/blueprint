@@ -258,7 +258,7 @@ function createBlueprints(params) {
 
 		if (layoutList.length != 0) {
 			var layoutJson = layoutToJson(layoutList);
-			finalOutput[i] = layoutJson;
+			finalOutput[numValidLayouts] = layoutJson;
 			numValidLayouts += 1;
 		}
 	}
