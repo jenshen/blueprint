@@ -133,6 +133,7 @@ var Layout = function(width, height, clusters) {
 			var clusterLength = 0;
 			for (var i = 0; i < rooms.length; i++) {
 				// Must flip height + width since cluster is rotated
+				var roomWidth = rooms[i].height;
 				var roomHeight = rooms[i].width;
 
 				// Initially place doors on left side of cluster
@@ -141,7 +142,7 @@ var Layout = function(width, height, clusters) {
 				clusterLength += roomHeight;
 
 				// Move doors to right side of cluster
-				if (openWall == 'right') xCenter += (cluster.width-1); 
+				if (openWall == 'right') xCenter += (roomWidth-1); 
 
 				// Door created with coordinates relative to entire layout + rotation included
 				// Coordinates are center of door
@@ -153,6 +154,7 @@ var Layout = function(width, height, clusters) {
 			for (var i = 0; i < rooms.length; i++) {
 				// Must flip height + width since cluster is rotated
 				var roomWidth = rooms[i].width;
+				var roomHeight = rooms[i].height;
 
 				// Initially place doors on top side of cluster
 				var xCenter = minX + Math.floor(roomWidth/2) + clusterLength;
@@ -160,7 +162,7 @@ var Layout = function(width, height, clusters) {
 				clusterLength += roomWidth;
 
 				// Move doors to bottom side of cluster
-				if (openWall == 'bottom') yCenter += (cluster.height-1); 
+				if (openWall == 'bottom') yCenter += (roomHeight-1); 
 
 				// Door created with coordinates relative to entire layout + rotation included
 				rooms[i].door = new Door(xCenter, yCenter, cluster.rotated);
