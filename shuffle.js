@@ -192,16 +192,16 @@ var shuffleClusters = function(clusters, orderings, width, height) {
 		for (var j = 0; j < clusters.length; j++) {
 			var clusterToPlace = clusters[j];
 			if (!layout.addCluster(clusterToPlace, ordering[j])) {
-			//	console.log("cluster failed");
 				layoutSuccessful = false;
 				break;
 			}
 			//console.log("cluster placed successfully ordering: " + i + "cluster: " + j);
 		}
 
-		if (layoutSuccessful) layouts.push(layout);
+		if (layoutSuccessful) {
+			layouts.push(layout);
+		}
 	}
-
 	return layouts;
 }
 
@@ -234,6 +234,7 @@ function createBlueprints(params) {
 
 	// var layoutJson = layoutToJson(layoutList);
 	var numLayouts = 3;
+	var numValidLayouts = 0;
 	// console.log(layoutJson);
 	var finalOutput = new Object();
 	for (var i = 0; i < numLayouts; i++) {
@@ -255,12 +256,14 @@ function createBlueprints(params) {
 		// var height = 50;
 		var layoutList = shuffleClusters(clusterList, orderings, width, height);
 
-		var layoutJson = layoutToJson(layoutList);
-
-		finalOutput[i] = layoutJson;
+		if (layoutList.length != 0) {
+			var layoutJson = layoutToJson(layoutList);
+			finalOutput[i] = layoutJson;
+			numValidLayouts += 1;
+		}
 	}
 
-	finalOutput["layoutCount"] = numLayouts;
+	finalOutput["layoutCount"] = numValidLayouts;
 	//console.log(finalOutput);
 	return finalOutput;
 }
