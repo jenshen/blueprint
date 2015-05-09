@@ -8,7 +8,7 @@ var Layout = function(width, height, clusters, ordering) {
 		this.numRooms += this.clusters[r].roomList.length;
 	}
 
-	this.HALLWAY_WIDTH = 5;
+	this.HALLWAY_WIDTH = 3;
 	this.DOOR_WIDTH = 3;
 	this.OPEN_WALLS = [['right', 'bottom'], // [rotated, unrotated]; corners 1-4
 		['left', 'bottom'],

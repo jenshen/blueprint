@@ -11,6 +11,11 @@ html, body {
     height:100%;
 }
 
+@font-face {
+    font-family: Voltaire;
+    src: url("../external_dependencies/Voltaire-Regular.ttf");
+}
+
 .wrapper {
     width: 100%;
     height: 100%;
@@ -44,6 +49,19 @@ html, body {
 
 #btn-download-png:hover {
     background-color: #006699;
+}
+
+#btn-settings {
+    background-color: #003366;
+    color: #fff;
+    margin-top: 8px;
+    margin-right: 8px;
+    height: 34px;
+}
+
+#btn-settings:hover {
+    background-color: #fff;
+    color: #003366;
 }
 
 .navbar-title,
@@ -111,15 +129,13 @@ html, body {
 }
 
 .btn-flatten {
-    background-color: #006699;
+    background-color: #003366;
     color: #fff;
 }
 
 .btn-flatten:hover {
-    border-color: #006699;
-    border-width: 1px;
-    background-color: #fff;
-    color: #006699;
+    background-color: #006699;
+    color: #fff;
 }
 
 #scad-dump {

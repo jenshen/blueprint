@@ -6,6 +6,29 @@ $(function() {
     var layouts_total = 0;
     var layout_width = 0;
     var layout_length = 0;
+    var param_width_final = "";
+    var param_length_final = "";
+    var param_bedMaster_final = "";
+    var param_bedStandard_final = "";
+    var param_bathFull_final = "";
+    var param_bathHalf_final = "";
+    var param_bedMaster_length_final = "";
+    var param_bedMaster_width_final = "";
+    var param_bedStandard_length_final = "";
+    var param_bedStandard_width_final = "";
+    var param_bathFull_length_final = "";
+    var param_bathFull_width_final = "";
+    var param_bathHalf_length_final = "";
+    var param_bathHalf_width_final = "";
+    var param_kitchen_length_final = "";
+    var param_kitchen_width_final = "";
+    var param_dining_length_final = "";
+    var param_dining_width_final = "";
+    var param_living_length_final = "";
+    var param_living_width_final = "";
+    var param_kitchen_checked_final = false;
+    var param_dining_checked_final = false;
+    var param_living_checked_final = false;
 
     var data_all_layout = {};
 
@@ -103,6 +126,30 @@ $(function() {
             $('#parameterModal').modal('hide');
             entering_params = false;
 
+            param_width_final = param_width;
+            param_length_final = param_length;
+            param_bedMaster_final = param_bedMaster;
+            param_bedStandard_final = param_bedStandard;
+            param_bathFull_final = param_bathFull;
+            param_bathHalf_final = param_bathHalf;
+            param_bedMaster_length_final = param_bedMaster_length;
+            param_bedMaster_width_final = param_bedMaster_width;
+            param_bedStandard_length_final = param_bedStandard_length;
+            param_bedStandard_width_final = param_bedStandard_width;
+            param_bathFull_length_final = param_bathFull_length;
+            param_bathFull_width_final = param_bathFull_width;
+            param_bathHalf_length_final = param_bathHalf_length;
+            param_bathHalf_width_final = param_bathHalf_width;
+            param_kitchen_length_final = param_kitchen_length;
+            param_kitchen_width_final = param_kitchen_width;
+            param_dining_length_final = param_dining_length;
+            param_dining_width_final = param_dining_width;
+            param_living_length_final = param_living_length;
+            param_living_width_final = param_living_width;
+            param_kitchen_checked_final = document.getElementById("inputKitchen").checked;
+            param_dining_checked_final = document.getElementById("inputDining").checked;
+            param_living_checked_final = document.getElementById("inputLiving").checked;
+
             $("#inputWidthGroup").removeClass("has-error");
             $("#inputWidthGroup").removeClass("has-error");
             $("#inputBedMasterGroup").removeClass("has-error");
@@ -133,6 +180,9 @@ $(function() {
             document.getElementById("inputDiningWidth").value = "";
             document.getElementById("inputLivingLength").value = "";
             document.getElementById("inputLivingWidth").value = "";
+            document.getElementById("inputKitchen").checked = false;
+            document.getElementById("inputDining").checked = false;
+            document.getElementById("inputLiving").checked = false;
 
             // set params
             var params = {};
@@ -152,7 +202,7 @@ $(function() {
             params["param_bathHalf_length"] = param_bathHalf_length;
             params["param_bathHalf_width"] = param_bathHalf_width;
 
-            if (document.getElementById("inputKitchen").checked) {
+            if (param_kitchen_checked_final) {
                 params["param_kitchen"] = 1;
                 params["param_kitchen_length"] = param_kitchen_length;
                 params["param_kitchen_width"] = param_kitchen_width;
@@ -161,7 +211,7 @@ $(function() {
                 params["param_kitchen"] = 0;
             }
 
-            if (document.getElementById("inputDining").checked) {
+            if (param_dining_checked_final) {
                 params["param_dining"] = 1;
                 params["param_dining_length"] = param_dining_length;
                 params["param_dining_width"] = param_dining_width;
@@ -170,7 +220,7 @@ $(function() {
                 params["param_dining"] = 0;
             }
 
-            if (document.getElementById("inputLiving").checked) {
+            if (param_living_checked_final) {
                 params["param_living"] = 1;
                 params["param_living_length"] = param_living_length;
                 params["param_living_width"] = param_living_width;
@@ -183,7 +233,6 @@ $(function() {
             // call the blueprint function
 
             data_all_layout = createBlueprints(params);
-            console.log(data_all_layout);
 
             layouts_current = 1;
             layouts_total = data_all_layout["layoutCount"];
@@ -199,6 +248,37 @@ $(function() {
                 $('#invalidModal').modal('show');
             }
         }
+    });
+
+    $("#btn-settings").click(function(evt) {
+        evt.preventDefault();
+
+        document.getElementById("inputWidth").value = param_width_final;
+        document.getElementById("inputLength").value = param_length_final;
+        document.getElementById("inputBedMaster").value = param_bedMaster_final;
+        document.getElementById("inputBedStandard").value = param_bedStandard_final;
+        document.getElementById("inputBathFull").value = param_bathFull_final;
+        document.getElementById("inputBathHalf").value = param_bathHalf_final;
+        document.getElementById("inputBedMasterLength").value = param_bedMaster_length_final;
+        document.getElementById("inputBedMasterWidth").value = param_bedMaster_width_final;
+        document.getElementById("inputBedStandardLength").value = param_bedStandard_length_final;
+        document.getElementById("inputBedStandardWidth").value = param_bedStandard_width_final;
+        document.getElementById("inputBathFullLength").value = param_bathFull_length_final;
+        document.getElementById("inputBathFullWidth").value = param_bathFull_width_final;
+        document.getElementById("inputBathHalfLength").value = param_bathHalf_length_final;
+        document.getElementById("inputBathHalfWidth").value = param_bathHalf_width_final;
+        document.getElementById("inputKitchenLength").value = param_kitchen_length_final;
+        document.getElementById("inputKitchenWidth").value = param_kitchen_width_final;
+        document.getElementById("inputDiningLength").value = param_dining_length_final;
+        document.getElementById("inputDiningWidth").value = param_dining_width_final;
+        document.getElementById("inputLivingLength").value = param_living_length_final;
+        document.getElementById("inputLivingWidth").value = param_living_width_final;
+        document.getElementById("inputKitchen").checked = param_kitchen_checked_final;
+        document.getElementById("inputDining").checked = param_dining_checked_final;
+        document.getElementById("inputLiving").checked = param_living_checked_final;
+
+        $('#parameterModal').modal('show');
+
     });
     
     //////////////////////////////////////////////////////////
@@ -274,7 +354,7 @@ $(function() {
     //////////////////////////////////////////////////////////
     function create_3D (floor_data) {
         var data = "";
-        data = "module exterior(width, length, height, thickness){union() {translate([0,0,-1.5*thickness]) {cube([width,length,1.5*thickness]);}translate([-thickness,-thickness,-0.5*thickness]) {cube([width + thickness,thickness,height + 0.5*thickness]);}translate([-thickness,-thickness,-0.5*thickness]) {cube([thickness,length + thickness,height + 0.5*thickness]);}translate([width,-thickness,-0.5*thickness]) {cube([thickness,length + 2*thickness,height + 0.5*thickness]);}translate([-thickness,length,-0.5*thickness]) {cube([width + 2*thickness,thickness,height + 0.5*thickness]);}}}module wall_x(x1, y1, x2, y2, height, thickness) {translate([x1 - 0.5*thickness,y1 - 0.5*thickness, 0]) {cube([x2 - x1 + thickness, thickness,height-thickness]);}}module wall_y(x1, y1, x2, y2, height, thickness) {translate([x1 - 0.5*thickness,y1 - 0.5 * thickness, 0]) {cube([thickness, y2 - y1 + thickness,height-thickness]);}}";
+        data = "module exterior(width, length, height, thickness){union() {translate([0,0,-1.5*thickness]) {cube([width,length,1.5*thickness]);}translate([-thickness,-thickness,-0.5*thickness]) {cube([width + thickness,thickness,height + 0.5*thickness]);}translate([-thickness,-thickness,-0.5*thickness]) {cube([thickness,length + thickness,height + 0.5*thickness]);}translate([width,-thickness,-0.5*thickness]) {cube([thickness,length + 2*thickness,height + 0.5*thickness]);}translate([-thickness,length,-0.5*thickness]) {cube([width + 2*thickness,thickness,height + 0.5*thickness]);}}}module wall_x(x1, y1, x2, y2, height, thickness) {translate([x1 - 0.5*thickness,y1 - 0.5*thickness, 0]) {cube([x2 - x1 + thickness, thickness,height-thickness]);}}module wall_y(x1, y1, x2, y2, height, thickness) {translate([x1 - 0.5*thickness,y1 - 0.5 * thickness, 0]) {cube([thickness, y2 - y1 + thickness,height-thickness]);}}module door_x(x1, y1, x2, y2, height, thickness) {translate([x1,y1 - 0.5*thickness, 0]) {cube([x2 - x1, thickness,height]);}}module door_y(x1, y1, x2, y2, height, thickness) {translate([x1 - 0.5*thickness,y1, 0]) {cube([thickness, y2 - y1,height-thickness]);}}";
         data += "mirror([0,1,0]){ difference() {union() {exterior(" + layout_width + "," + layout_length + ",10,0.4);";
 
         // add walls here
@@ -310,18 +390,10 @@ $(function() {
             var x2 = door_data[2];
             var y2 = door_data[3];
 
-            if (x1 != 0) {
-                data += "wall_y(" + x1 + "," + y1 + "," + x1 + "," + y2 + ", 7, 0.6);";
-            }
-            if (x2 != layout_width) {
-                data += "wall_y(" + x2 + "," + y1 + "," + x2 + "," + y2 + ", 7, 0.6);";
-            }
-            if (y1 != 0) {
-                data += "wall_x(" + x1 + "," + y1 + "," + x2 + "," + y1 + ", 7, 0.6);";
-            }
-            if (y2 != layout_length) {
-                data += "wall_x(" + x1 + "," + y2 + "," + x2 + "," + y2 + ", 7, 0.6);";
-            }
+            data += "door_y(" + x1 + "," + y1 + "," + x1 + "," + y2 + ", 7, 1);";
+            data += "door_y(" + x2 + "," + y1 + "," + x2 + "," + y2 + ", 7, 1);";
+            data += "door_x(" + x1 + "," + y1 + "," + x2 + "," + y1 + ", 7, 1);";
+            data += "door_x(" + x1 + "," + y2 + "," + x2 + "," + y2 + ", 7, 1);";
         }
         data += "}}";
 

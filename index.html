@@ -18,7 +18,6 @@
     <link rel="stylesheet" type="text/css" href="css/mainLayout.css" />
 
     <!-- Custom CSS -->
-    <link href='http://fonts.googleapis.com/css?family=Voltaire' rel='stylesheet' type='text/css'>
 
     <script type="text/javascript" src="external_dependencies/jquery-2.1.3.min.js"></script>
     <script type="text/javascript" src="external_dependencies/bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
@@ -217,10 +216,12 @@
         <div class="navbar navbar-fixed-top navbar-colored">
             <div class="navbar-header">
               <a class="navbar-brand navbar-title">BLUEPRINT</a>
+          
             </div>
+            <button type="button" class="btn navbar-btn navbar-right" id="btn-settings">
+              <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+            </button>
         </div>
-
-
         <div class="menu-top" id="menu-top-control">
           <a class="menu-title"><span class="glyphicon glyphicon-triangle-left btn-left" aria-hidden="true" id="swipe-left"></span><span id="menu-top-control-layout"> 1/25 </span><span class="glyphicon glyphicon-triangle-right btn-right" aria-hidden="true" id="swipe-right"></span></a>
         </div>
@@ -233,11 +234,11 @@
 
         <div class="menu-bottom" id="menu-bottom-control">
           <div class="menu-bottom-holder">
-            <button type="button" class="btn" id="btn-download-scad" aria-label="Left Align">
-              <span class="glyphicon glyphicon-save" aria-hidden="true"> .scad</span>
-            </button>
             <button type="button" class="btn" id="btn-download-png" aria-label="Left Align">
               <span class="glyphicon glyphicon-save" aria-hidden="true"> .png</span>
+            </button>
+            <button type="button" class="btn" id="btn-download-scad" aria-label="Left Align">
+              <span class="glyphicon glyphicon-save" aria-hidden="true"> .scad</span>
             </button>
           </div>
         </div>
