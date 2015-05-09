@@ -236,7 +236,7 @@ function createBlueprints(params) {
 	// var layoutList = shuffleClusters(clusterList, orderings, width, height);
 
 	// var layoutJson = layoutToJson(layoutList);
-	var numLayouts = 3;
+	var numLayouts = 10;
 	var numValidLayouts = 0;
 	// console.log(layoutJson);
 	var finalOutput = new Object();
