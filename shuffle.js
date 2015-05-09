@@ -333,7 +333,7 @@ var layoutToJson = function(layouts) {
 
 		// Add front entrance
 		var entrance_xCenter = Math.floor(floorWidth/2);
-		var entrance_yCenter = floorHeight;
+		var entrance_yCenter = floorHeight-1;
 		doorsOutput[roomCount] = [entrance_xCenter-1, entrance_yCenter, entrance_xCenter+1, entrance_yCenter+1];
 
 		finalOutput[i] = {"roomCount": layout.numRooms, "rooms": roomsOutput, "doorCount": roomCount+1, "doors": doorsOutput};
