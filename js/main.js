@@ -192,7 +192,12 @@ $(function() {
 
             layout_width = param_width;
             layout_length = param_length;
-            create_2D(data_all_layout[layouts_current - 1][0]);
+            if (layouts_total > 0) {
+                create_2D(data_all_layout[layouts_current - 1][0]);
+            }
+            else {
+                $('#invalidModal').modal('show');
+            }
         }
     });
     
@@ -326,6 +331,19 @@ $(function() {
     //////////////////////////////////////////////////////////
     // DRAW 2D CANVAS
     //////////////////////////////////////////////////////////
+    function draw_grid(x1, y1, x2, y2) {
+        var canvas = document.getElementById("layout-canvas");
+
+        var ctx = canvas.getContext("2d");
+        ctx.strokeStyle = '#006699';
+        ctx.lineWidth = 0.3;
+
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+    }
+
     function draw_wall(x1, y1, x2, y2) {
         var canvas = document.getElementById("layout-canvas");
 
@@ -381,12 +399,22 @@ $(function() {
         var ratio_length = draw_size_y / layout_length;
         var ratio_max = Math.min(ratio_width, ratio_length);
 
+        // draw grid
+        var square_diff = 1;
+        for (var i = 0; i * square_diff * ratio_max < canvas.width; i ++) {
+            draw_grid(i * square_diff * ratio_max, 0, i * square_diff * ratio_max, canvas.height);
+        }
+        for (var i = 0; i * square_diff * ratio_max < canvas.height; i++) {
+            draw_grid(0, i * square_diff * ratio_max, canvas.width, i * square_diff * ratio_max);
+        }
+
         // draw exterior
         if (ratio_width < ratio_length) {
             draw_wall(offset_x, (canvas.height / 2) - (layout_length * ratio_max / 2), canvas.width - offset_x, (canvas.height / 2) - (layout_length * ratio_max / 2));
             draw_wall(offset_x, (canvas.height / 2) + (layout_length * ratio_max / 2), canvas.width - offset_x, (canvas.height / 2) + (layout_length * ratio_max / 2));
             draw_wall(offset_x, (canvas.height / 2) - (layout_length * ratio_max / 2), offset_x, (canvas.height / 2) + (layout_length * ratio_max / 2));
             draw_wall(canvas.width - offset_x, (canvas.height / 2) - (layout_length * ratio_max / 2), canvas.width - offset_x, (canvas.height / 2) + (layout_length * ratio_max / 2)); 
+
         }
         else {
             draw_wall((canvas.width / 2) - (layout_width * ratio_max / 2), offset_y, (canvas.width / 2) - (layout_width * ratio_max / 2), canvas.height - offset_y);

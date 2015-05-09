@@ -87,9 +87,9 @@ function JSONtoRoomList(json) {
   var param_bathFull_length = json['param_bathFull_length'];
   console.log(json['param_bathFull_width']);
   console.log(json['param_bathFull_length']);
-  
+
   for (i = 0; i < fullBathCount; i++) {
-    roomList.push(new Room("Bath-Full", 5, 5)); 
+    roomList.push(new Room("Bath-Full", 5, 8)); 
   }
 
   var halfBathCount = json['param_bathHalf'];

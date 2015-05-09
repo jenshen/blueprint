@@ -23,11 +23,10 @@ html, body {
 #btn-download-scad {
     background-color: #003366;
     color: #fff;
-    float:right;
-    margin-top: 8px;
+    margin-top: 0px;
     height:34px;
     width:100px;
-    margin-right: 8px;
+    margin-left: 4px;
 }
 
 #btn-download-scad:hover {
@@ -37,11 +36,10 @@ html, body {
 #btn-download-png {
     background-color: #003366;
     color: #fff;
-    float:right;
-    margin-top: 8px;
+    margin-top: 0px;
     height:34px;
     width:100px;
-    margin-right: 8px;
+    margin-right: 4px;
 }
 
 #btn-download-png:hover {
@@ -139,14 +137,21 @@ html, body {
     top:150px;
 }
 
-.containter-layout-canvas {
-    position: absolute;
-    width: 100%;
-    height: 600px;
-    top:150px;
-}
-
 .layout-canvas-holder {
     text-align: center;
     display: block;
 }
+
+.menu-bottom {
+    position: absolute;
+    width: 100%;
+    height: 34px;
+    top:800px;
+}
+
+.menu-bottom-holder {
+    text-align: center;
+    display: block;
+}
+
+
