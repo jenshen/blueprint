@@ -139,6 +139,7 @@ var Layout = function(width, height, clusters, ordering) {
 
 				// Initially place doors on left side of cluster
 				var xCenter = minX + 0;
+				if (openWall == 'left') xCenter = this.width-roomWidth;
 				var yCenter = minY + Math.floor(roomHeight/2) + clusterLength;
 				clusterLength += roomHeight;
 
@@ -160,6 +161,7 @@ var Layout = function(width, height, clusters, ordering) {
 				// Initially place doors on top side of cluster
 				var xCenter = minX + Math.floor(roomWidth/2) + clusterLength;
 				var yCenter = minY + 0;
+				if (openWall == 'top') yCenter = this.height-roomHeight;
 				clusterLength += roomWidth;
 
 				// Move doors to bottom side of cluster
