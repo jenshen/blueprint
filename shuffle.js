@@ -182,8 +182,8 @@ var shuffleClusters = function(clusters, orderings, width, height) {
 	// console.log("orderings" + orderings);
 	
 	for (var i = 0; i < orderings.length; i++) {
-		var layout = new Layout(width, height, clusters);
 		var ordering = orderings[i];
+		var layout = new Layout(width, height, clusters, ordering);
 		var layoutSuccessful = true;
 
 		layout.addFoyer(); // Add foyer first to mark space
