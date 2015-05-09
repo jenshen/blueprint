@@ -89,37 +89,37 @@ function JSONtoRoomList(json) {
   console.log(json['param_bathFull_length']);
 
   for (i = 0; i < fullBathCount; i++) {
-    roomList.push(new Room("Bath-Full", 5, 8)); 
+    roomList.push(new Room("Bath-Full", parseInt(json['param_bathFull_width']), parseInt(json['param_bathFull_length']))); 
   }
 
   var halfBathCount = json['param_bathHalf'];
   for (i = 0; i < halfBathCount; i++) {
-    roomList.push(new Room("Bath-Half", 5, 4)); 
+    roomList.push(new Room("Bath-Half", parseInt(json['param_bathHalf_width']), parseInt(json['param_bathHalf_length']))); 
   }
 
   var masterCount = json['param_bedMaster'];
   for (i = 0; i < masterCount; i++) {
-    roomList.push(new Room("Bed-Master", 10, 20)); 
+    roomList.push(new Room("Bed-Master", parseInt(json['param_bedMaster_width']), parseInt(json['param_bedMaster_length']))); 
   }
 
   var standardCount= json['param_bedStandard'];
   for (i = 0; i < standardCount; i++) {
-    roomList.push(new Room("Bedroom-Standard", 10, 10)); 
+    roomList.push(new Room("Bedroom-Standard", parseInt(json['param_bedStandard_width']), parseInt(json['param_bedStandard_length']))); 
   }
 
   var diningCount= json['param_dining'];
   for (i = 0; i < diningCount; i++) {
-    roomList.push(new Room("Dining Room", 10, 15)); 
+    roomList.push(new Room("Dining Room", parseInt(json['param_dining_width']), parseInt(json['param_dining_length']))); 
   }
 
   var kitchenCount = json['param_kitchen'];
   for (i = 0; i < kitchenCount; i++) {
-    roomList.push(new Room("Kitchen", 10, 20)); 
+    roomList.push(new Room("Kitchen", parseInt(json['param_kitchen_width']), parseInt(json['param_kitchen_length']))); 
   }
 
   var livingCount = json['param_living'];
   for (i = 0; i < livingCount; i++) {
-    roomList.push(new Room("Living Room", 10, 20)); 
+    roomList.push(new Room("Living Room", parseInt(json['param_living_width']), parseInt(json['param_living_length']))); 
   }
   
   return roomList;
