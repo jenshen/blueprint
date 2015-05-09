@@ -83,28 +83,33 @@ function JSONtoRoomList(json) {
   // }
 
   var fullBathCount = json['param_bathFull'];
+  var param_bathFull_width = json['param_bathFull_width'];
+  var param_bathFull_length = json['param_bathFull_length'];
+  console.log(json['param_bathFull_width']);
+  console.log(json['param_bathFull_length']);
+  
   for (i = 0; i < fullBathCount; i++) {
-    roomList.push(new Room("Full Bath", 5, 8)); 
+    roomList.push(new Room("Bath-Full", 5, 5)); 
   }
 
   var halfBathCount = json['param_bathHalf'];
   for (i = 0; i < halfBathCount; i++) {
-    roomList.push(new Room("Half Bath", 5, 4)); 
+    roomList.push(new Room("Bath-Half", 5, 4)); 
   }
 
   var masterCount = json['param_bedMaster'];
   for (i = 0; i < masterCount; i++) {
-    roomList.push(new Room("Master Bedroom", 10, 20)); 
+    roomList.push(new Room("Bed-Master", 10, 20)); 
   }
 
   var standardCount= json['param_bedStandard'];
   for (i = 0; i < standardCount; i++) {
-    roomList.push(new Room("Standard Bedroom", 10, 10)); 
+    roomList.push(new Room("Bedroom-Standard", 10, 10)); 
   }
 
   var diningCount= json['param_dining'];
   for (i = 0; i < diningCount; i++) {
-    roomList.push(new Room("Dining", 10, 15)); 
+    roomList.push(new Room("Dining Room", 10, 15)); 
   }
 
   var kitchenCount = json['param_kitchen'];

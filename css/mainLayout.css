@@ -124,7 +124,11 @@ html, body {
     color: #006699;
 }
 
-#blob-dump {
+#scad-dump {
+    display: none;
+}
+
+#png-dump {
     display: none;
 }
 
