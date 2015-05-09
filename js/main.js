@@ -302,7 +302,8 @@ $(function() {
         data += "}";
 
         // add doors here
-        for (var i = 0; i < room_count; i++) {
+        var door_count = floor_data["doorCount"];
+        for (var i = 0; i < door_count; i++) {
             var door_data = floor_data["doors"][i];
             var x1 = door_data[0];
             var y1 = door_data[1];
@@ -451,7 +452,8 @@ $(function() {
         }
 
         // draw doors
-        for (var i = 0; i < room_count; i++) {
+        var door_count = floor_data["doorCount"];
+        for (var i = 0; i < door_count; i++) {
             var door_data = floor_data["doors"][i];
             var x1 = door_data[0];
             var y1 = door_data[1];
