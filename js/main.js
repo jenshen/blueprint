@@ -402,11 +402,21 @@ $(function() {
 
         // draw grid
         var square_diff = 1;
-        for (var i = 0; i * square_diff * ratio_max < canvas.width; i ++) {
-            draw_grid(i * square_diff * ratio_max, 0, i * square_diff * ratio_max, canvas.height);
+        if (ratio_width < ratio_length) {
+            for (var i = 0; i < layout_width; i ++) {
+                draw_grid(offset_x + i * square_diff * ratio_max, (canvas.height / 2) - (layout_length * ratio_max / 2), offset_x + i * square_diff * ratio_max, (canvas.height / 2) + (layout_length * ratio_max / 2));
+            }
+            for (var i = 0; i  < layout_length; i++) {
+                draw_grid(offset_x, (canvas.height / 2) - (layout_length * ratio_max / 2) + i * square_diff * ratio_max, canvas.width - offset_x, (canvas.height / 2) - (layout_length * ratio_max / 2) + i * square_diff * ratio_max);
+            }
         }
-        for (var i = 0; i * square_diff * ratio_max < canvas.height; i++) {
-            draw_grid(0, i * square_diff * ratio_max, canvas.width, i * square_diff * ratio_max);
+        else {
+            for (var i = 0; i < layout_width; i ++) {
+                draw_grid((canvas.width / 2) - (layout_width * ratio_max / 2) + i * square_diff * ratio_max, offset_y, (canvas.width / 2) - (layout_width * ratio_max / 2) + i * square_diff * ratio_max, canvas.height - offset_y);
+            }
+            for (var i = 0; i  < layout_length; i++) {
+                draw_grid((canvas.width / 2) - (layout_width * ratio_max / 2), offset_y + i * square_diff * ratio_max, (canvas.width / 2) + (layout_width * ratio_max / 2), offset_y + i * square_diff * ratio_max);
+            }
         }
 
         // draw exterior
