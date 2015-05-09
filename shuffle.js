@@ -1,8 +1,9 @@
-var Layout = function(width, height, clusters) {
+var Layout = function(width, height, clusters, ordering) {
 	this.width = width;
 	this.height = height;
 	this.clusters = clusters.slice(); // List of clusters to place
 	this.numRooms = 0;
+	this.ordering = ordering;
 	for (var r = 0; r < this.clusters.length; r++) {
 		this.numRooms += this.clusters[r].roomList.length;
 	}
@@ -273,17 +274,22 @@ var layoutToJson = function(layouts) {
 	var finalOutput = new Object();
 
 	for (var i = 0; i < layouts.length; i++) {
+		var layout = layouts[i];
 		var clusters = layouts[i].clusters;
 		var roomsOutput = new Object();
 		var doorsOutput = new Object();
 		var roomCount = 0;
-		var numRooms = layouts[i].numRooms;
+		var numRooms = layout.numRooms;
+		var floorWidth = layout.width;
+		var floorHeight = layout.height;
+		var ordering = layout.ordering;
 
 		for (var j = 0; j < clusters.length; j++) {
 			var c = clusters[j];
 			var isRotated = c.rotated;
 			var rooms = clusters[j].roomList;
 			var clusterLength = 0;
+			var corner = ordering[j];
 
 			for (var k = 0; k < rooms.length; k++) {
 				var r = rooms[k];
@@ -294,12 +300,20 @@ var layoutToJson = function(layouts) {
 				// Add room's coords
 				if (isRotated) { // Rooms go vertically
 					roomData["type"] = r.name;
-					roomData["coords"] = [c.xPos, c.yPos+clusterLength, c.xPos+roomWidth, c.yPos+clusterLength+roomHeight];
+					if (corner == 2 || corner == 3) {
+						roomData["coords"] = [floorWidth-roomWidth, c.yPos+clusterLength, floorWidth, c.yPos+clusterLength+roomHeight];
+					} else {
+						roomData["coords"] = [c.xPos, c.yPos+clusterLength, c.xPos+roomWidth, c.yPos+clusterLength+roomHeight];
+					}
 					roomsOutput[roomCount] = roomData;
 					clusterLength += roomHeight;
 				} else { // Rooms go horizontally
 					roomData["type"] = r.name;
-					roomData["coords"] = [c.xPos+clusterLength, c.yPos, c.xPos+clusterLength+roomWidth, c.yPos+roomHeight];
+					if (corner == 3 || corner == 4) {
+						roomData["coords"] = [c.xPos+clusterLength, floorHeight-roomHeight, c.xPos+clusterLength+roomWidth, floorHeight];
+					} else {
+						roomData["coords"] = [c.xPos+clusterLength, c.yPos, c.xPos+clusterLength+roomWidth, c.yPos+roomHeight];
+					}
 					roomsOutput[roomCount] = roomData;
 					clusterLength += roomWidth;
 				}
@@ -315,7 +329,7 @@ var layoutToJson = function(layouts) {
 			}
 		}
 
-		finalOutput[i] = {"roomCount": layouts[i].numRooms, "rooms": roomsOutput, "doors": doorsOutput};
+		finalOutput[i] = {"roomCount": layout.numRooms, "rooms": roomsOutput, "doors": doorsOutput};
 	}
 
 	return finalOutput;
