@@ -30,7 +30,7 @@ var Layout = function(width, height, clusters, ordering) {
 
 	// adds a foyer (size: width=5 by height=10) to the same location of each apartment where the door goes
 	// location = bottom center of each layout along the wider wall
-	// this labels those squares as a hallway (1)
+	// this labels those squares as a room (2)
 	this.addFoyer = function() {
 		var roomCenterWidth = Math.floor(this.width/2);
 		var foyerStart = roomCenterWidth - 3; 
@@ -39,7 +39,7 @@ var Layout = function(width, height, clusters, ordering) {
 
 		for (i = 0; i < foyerLength; i++) {
 			for (j = foyerStart; j < foyerEnd; j++) {
-				this.grid[this.height-1-i][j] = 1;
+				this.grid[this.height-1-i][j] = 2;
 			}
 		}
 	}
