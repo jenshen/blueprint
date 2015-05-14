@@ -26,8 +26,6 @@ var Layout = function(width, height, clusters, ordering) {
 		}
 	}
 
-	// console.log(this.grid);
-
 	// adds a foyer (size: width=5 by height=10) to the same location of each apartment where the door goes
 	// location = bottom center of each layout along the wider wall
 	// this labels those squares as a room (2)
@@ -46,8 +44,6 @@ var Layout = function(width, height, clusters, ordering) {
 
 	// returns whether adding cluster was successful
 	this.addCluster = function(cluster, corner) {
-		//console.log("corner "+corner);
-		//console.log(cluster);
 		var clusterWidth = cluster.width;
 		var clusterHeight = cluster.height;
 
@@ -56,9 +52,6 @@ var Layout = function(width, height, clusters, ordering) {
 			clusterWidth = cluster.height;
 			clusterHeight = cluster.width;
 		}
-		
-		//console.log(clusterWidth +" "+clusterHeight);
-
 
 		// Set boundary coordinates of cluster in grid
 		var minX, maxX, minY, maxY;
@@ -89,7 +82,6 @@ var Layout = function(width, height, clusters, ordering) {
 			maxY = this.height-1;
 		}
 
-		//console.log("minX, corner: " + minX + " " + corner);
 		if (minX == undefined) return false; // Boundaries not set from invalid corner
 		
 		var d_minX = hallwayDeltas[0];
@@ -121,7 +113,6 @@ var Layout = function(width, height, clusters, ordering) {
 		}
 
 		// UPDATE X, Y POSITION
-		//console.log("x, y: "+minX+" "+minY);
 		cluster.xPos = minX;
 		cluster.yPos = minY;
 
@@ -181,7 +172,6 @@ var Layout = function(width, height, clusters, ordering) {
 // returns: list of generated layouts
 var shuffleClusters = function(clusters, orderings, width, height) {
 	var layouts = new Array();
-	// console.log("orderings" + orderings);
 	
 	for (var i = 0; i < orderings.length; i++) {
 		var ordering = orderings[i];
@@ -190,15 +180,12 @@ var shuffleClusters = function(clusters, orderings, width, height) {
 
 		layout.addFoyer(); // Add foyer first to mark space
 
-		// console.log(layout.grid);
-
 		for (var j = 0; j < clusters.length; j++) {
 			var clusterToPlace = clusters[j];
 			if (!layout.addCluster(clusterToPlace, ordering[j])) {
 				layoutSuccessful = false;
 				break;
 			}
-			//console.log("cluster placed successfully ordering: " + i + "cluster: " + j);
 		}
 
 		if (layoutSuccessful) {
@@ -215,48 +202,19 @@ function createBlueprints(params) {
 	var width = getFloorDimensions(params)[0];
 	var height = getFloorDimensions(params)[1];
 
-	// // calls roomList = JSONtoRoomList(params)
-	// var roomList = JSONtoRoomList(params);
-
-	// // calls groupList = groupRooms(roomList)
-	// var groupList = groupRooms(roomList);
-
-	// // calls clusterList = createClusterList(groupList)
-	// var clusterList = createClusterList(groupList);
-
-	// // make orderings = getRoomPlacementOrder()
-	// // var orderings = [getRoomPlacementOrder(), getRoomPlacementOrder(), getRoomPlacementOrder(), getRoomPlacementOrder()];
-
-	// var orderings = [getRoomPlacementOrder()];
-
-	
-
-	// // var width = 50;
-	// // var height = 50;
-	// var layoutList = shuffleClusters(clusterList, orderings, width, height);
-
-	// var layoutJson = layoutToJson(layoutList);
 	var numLayouts = 10;
 	var numValidLayouts = 0;
-	// console.log(layoutJson);
 	var finalOutput = new Object();
+
 	for (var i = 0; i < numLayouts; i++) {
-		// calls roomList = JSONtoRoomList(params)
 		var roomList = JSONtoRoomList(params);
 
-		// calls groupList = groupRooms(roomList)
 		var groupList = groupRooms(roomList);
 
-		// calls clusterList = createClusterList(groupList)
 		var clusterList = createClusterList(groupList);
-
-		// make orderings = getRoomPlacementOrder()
-		// var orderings = [getRoomPlacementOrder(), getRoomPlacementOrder(), getRoomPlacementOrder(), getRoomPlacementOrder()];
 
 		var orderings = [getRoomPlacementOrder()];
 
-		// var width = 50;
-		// var height = 50;
 		var layoutList = shuffleClusters(clusterList, orderings, width, height);
 
 		if (layoutList.length != 0) {
@@ -267,7 +225,6 @@ function createBlueprints(params) {
 	}
 
 	finalOutput["layoutCount"] = numValidLayouts;
-	//console.log(finalOutput);
 	return finalOutput;
 }
 
@@ -340,9 +297,4 @@ var layoutToJson = function(layouts) {
 	}
 
 	return finalOutput;
-}	
-
-
-
-
-
+}
